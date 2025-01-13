@@ -15,7 +15,7 @@ const Register = () => {
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
-    // const image = form.image.files[0];
+    const image = form.image.files[0];
 
     //1. send image data to imgbb
     const photoURL = await imageUpload(image);
@@ -29,7 +29,7 @@ const Register = () => {
       //   console.log(result)
       // save user info in db if the user is new
       //   await saveUser({ ...result?.user, displayName: name, photoURL })
-      //   navigate('/')
+      navigate("/");
       toast.success("Signup Successful");
     } catch (err) {
       console.log(err);
