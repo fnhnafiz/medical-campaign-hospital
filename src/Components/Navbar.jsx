@@ -6,17 +6,13 @@ import avatarImg from "../../public/placeholder.jpg";
 import useAuth from "../Hooks/useAuth";
 import { AiOutlineMenu } from "react-icons/ai";
 import useAdmin from "../Hooks/useAdmin";
-import LoadingSpinner from "./LoadingSpinner";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logOut } = useAuth();
   // const isAdmin = true;
-  const [organizer, isAdminLoading] = useAdmin();
-  console.log(organizer);
-  if (isAdminLoading) {
-    return <LoadingSpinner></LoadingSpinner>;
-  }
+  const [organizer] = useAdmin();
+  // console.log(organizer);
 
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm px-4">

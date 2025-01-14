@@ -1,8 +1,16 @@
-const LoadingSpinner = () => {
+import { ScaleLoader } from "react-spinners";
+
+const LoadingSpinner = ({ smallHeight }) => {
   return (
-    <section className="bg-slate-50 absolute top-0 right-0 left-0 mx-auto flex justify-center items-center min-h-screen">
-      <span className="loader"></span>
-    </section>
+    <div
+      className={` ${smallHeight ? "h-[250px]" : "h-[70vh]"}
+      flex 
+      flex-col 
+      justify-center 
+      items-center `}
+    >
+      <ScaleLoader size={100} color="lime" />
+    </div>
   );
 };
 

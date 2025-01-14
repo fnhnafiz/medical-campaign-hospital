@@ -5,16 +5,12 @@ import { AiOutlineBars } from "react-icons/ai";
 import { GrLogout } from "react-icons/gr";
 import logo from "../../public/CampMedLOGO.png";
 import useAdmin from "../Hooks/useAdmin";
-import LoadingSpinner from "../Components/LoadingSpinner";
 
 const Sidebar = () => {
   const { logOut } = useAuth();
   const [isActive, setActive] = useState(false);
   // const isAdmin = true;
-  const [organizer, isAdminLoading] = useAdmin();
-  if (isAdminLoading) {
-    return <LoadingSpinner></LoadingSpinner>;
-  }
+  const [organizer] = useAdmin();
 
   // Sidebar Responsive Handler
   const handleToggle = () => {
@@ -136,17 +132,17 @@ const Sidebar = () => {
                         Analytics
                       </button>
                     </NavLink>
-                    <NavLink>
+                    <NavLink to="/dashboard/participant">
                       <button className="btn bg-green-500 hover:text-green-500 w-full text-white">
                         Participant Profile
                       </button>
                     </NavLink>
-                    <NavLink>
+                    <NavLink to="/dashboard/registered-camps">
                       <button className="btn bg-green-500 hover:text-green-500 w-full text-white">
                         Registered Camps
                       </button>
                     </NavLink>
-                    <NavLink>
+                    <NavLink to="/dashboard/payments">
                       <button className="btn bg-green-500 hover:text-green-500 w-full text-white">
                         Payment History
                       </button>

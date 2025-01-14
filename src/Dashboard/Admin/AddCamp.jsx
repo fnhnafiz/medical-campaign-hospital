@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API_KEY;
 
@@ -10,9 +12,12 @@ const AddCamp = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   const axiosPublic = useAxiosPublic();
+
+  const axiosSecure = useAxiosSecure();
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -37,6 +42,12 @@ const AddCamp = () => {
         description: data.description,
       };
       console.log(newCamp);
+      const addNewCamp = await axiosSecure.post("/add-camp", newCamp);
+      console.log(addNewCamp.data);
+      if (addNewCamp.data.insertedId) {
+        toast.success("Camp added");
+        reset();
+      }
     }
   };
   return (
@@ -85,7 +96,7 @@ const AddCamp = () => {
           <input
             placeholder="Camp Fees"
             id="campFees"
-            type="text"
+            type="number"
             min="0" // Prevents negative input in the UI
             {...register("campFees", {
               required: "Camp Fees are required",

@@ -9,10 +9,11 @@ import {
 } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import auth from "../Firebase/firebase.init";
-import axios from "axios";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
 
 export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
+  const axiosPublic = useAxiosPublic();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -48,23 +49,20 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       console.log("CurrentUser-->", currentUser);
       setUser(currentUser);
-      if (currentUser?.email) {
+      if (currentUser) {
         setUser(currentUser);
-        // const { data } = await axios.post(
-        //   `${import.meta.env.VITE_API_URL}/jwt`,
-        //   {
-        //     email: currentUser?.email,
-        //   },
-        //   { withCredentials: true }
-        // );
+        const userData = { email: currentUser?.email };
+        axiosPublic.post("/jwt", userData).then((res) => {
+          if (res.data.token) {
+            localStorage.setItem("token", res.data.token);
+          }
+        });
+
         setLoading(false);
         // console.log(data);
       } else {
         setUser(currentUser);
-        // const { data } = await axios.get(
-        //   `${import.meta.env.VITE_API_URL}/logout`,
-        //   { withCredentials: true }
-        // );
+        localStorage.removeItem("token");
         setLoading(false);
       }
     });

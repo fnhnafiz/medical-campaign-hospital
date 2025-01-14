@@ -6,14 +6,15 @@ const useAdmin = () => {
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
 
-  const { data: organizer = {}, isLoading: isAdminLoading } = useQuery({
+  const { data: organizer = {}, isPending: isAdminLoading } = useQuery({
     queryKey: ["admin", user?.email],
+    enabled: !!user?.email,
     queryFn: async () => {
       const { data } = await axiosPublic.get(`/users/admin/${user?.email}`);
       return data?.admin;
     },
   });
-  console.log("I am from useAdmin", organizer);
+  // console.log("I am from useAdmin", organizer);
   return [organizer, isAdminLoading];
 };
 
