@@ -2,12 +2,14 @@ import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API_KEY;
 
 const imaage_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AddCamp = () => {
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -20,6 +22,7 @@ const AddCamp = () => {
   const axiosSecure = useAxiosSecure();
 
   const onSubmit = async (data) => {
+    setLoading(true);
     console.log(data);
     const imageFile = { image: data.image[0] };
     // console.log(imageFile);
@@ -45,6 +48,7 @@ const AddCamp = () => {
       const addNewCamp = await axiosSecure.post("/add-camp", newCamp);
       console.log(addNewCamp.data);
       if (addNewCamp.data.insertedId) {
+        setLoading(false);
         toast.success("Camp added");
         reset();
       }
@@ -172,23 +176,6 @@ const AddCamp = () => {
           )}
         </div>
 
-        {/* <div className="md:col-span-2">
-          <label
-            htmlFor="participantCount"
-            className="block text-sm font-medium mb-1"
-          >
-            Participant Count<span className="text-red-500">**</span>
-          </label>
-          <input
-            placeholder="Participant Count"
-            id="participantCount"
-            type="number"
-            value={0}
-            readOnly
-            className="w-full border-gray-300 rounded-md shadow-sm bg-gray-100 p-2"
-          />
-        </div> */}
-
         <div className="md:col-span-2">
           <label
             htmlFor="description"
@@ -216,7 +203,11 @@ const AddCamp = () => {
             type="submit"
             className="btn w-full bg-green-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-green-600 transition"
           >
-            Add Camp
+            {loading ? (
+              <img className="w-[30px]" src="/loading-gif.gif" />
+            ) : (
+              "Add Camp"
+            )}
           </button>
         </div>
       </form>
