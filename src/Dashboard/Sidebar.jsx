@@ -4,11 +4,17 @@ import { NavLink } from "react-router-dom";
 import { AiOutlineBars } from "react-icons/ai";
 import { GrLogout } from "react-icons/gr";
 import logo from "../../public/CampMedLOGO.png";
+import useAdmin from "../Hooks/useAdmin";
+import LoadingSpinner from "../Components/LoadingSpinner";
 
 const Sidebar = () => {
   const { logOut } = useAuth();
   const [isActive, setActive] = useState(false);
-  const isAdmin = true;
+  // const isAdmin = true;
+  const [organizer, isAdminLoading] = useAdmin();
+  if (isAdminLoading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
 
   // Sidebar Responsive Handler
   const handleToggle = () => {
@@ -65,29 +71,59 @@ const Sidebar = () => {
           {/* Nav Items */}
           <div className="flex flex-col justify-between flex-1 mt-6">
             <nav className="space-y-5">
-              {isAdmin ? (
+              {organizer ? (
                 <>
-                  {/* Admin Home */}
-                  <div className="flex flex-col gap-6 ">
-                    <NavLink>
-                      <button className="btn bg-green-500 hover:text-green-500 w-full text-white">
-                        Organizer Profile
-                      </button>
+                  <div className="flex flex-col gap-6">
+                    <NavLink
+                      to="/dashboard/organizer-profile"
+                      className={({ isActive }) =>
+                        `btn w-full text-white ${
+                          isActive
+                            ? "bg-blue-500"
+                            : "bg-green-500 hover:text-green-500"
+                        }`
+                      }
+                    >
+                      Organizer Profile
                     </NavLink>
-                    <NavLink>
-                      <button className="btn bg-green-500 hover:text-green-500 w-full text-white">
-                        Add A Camp
-                      </button>
+
+                    <NavLink
+                      to="/dashboard/add-camp"
+                      className={({ isActive }) =>
+                        `btn w-full text-white ${
+                          isActive
+                            ? "bg-blue-500"
+                            : "bg-green-500 hover:text-green-500"
+                        }`
+                      }
+                    >
+                      Add A Camp
                     </NavLink>
-                    <NavLink>
-                      <button className="btn bg-green-500 hover:text-green-500 w-full text-white">
-                        Manage Camps
-                      </button>
+
+                    <NavLink
+                      to="/dashboard/manage-camps"
+                      className={({ isActive }) =>
+                        `btn w-full text-white ${
+                          isActive
+                            ? "bg-blue-500"
+                            : "bg-green-500 hover:text-green-500"
+                        }`
+                      }
+                    >
+                      Manage Camps
                     </NavLink>
-                    <NavLink>
-                      <button className="btn bg-green-500 hover:text-green-500 w-full text-white">
-                        Manage Registered Camps
-                      </button>
+
+                    <NavLink
+                      to="/dashboard/manage-registered-camps"
+                      className={({ isActive }) =>
+                        `btn w-full text-white ${
+                          isActive
+                            ? "bg-blue-500"
+                            : "bg-green-500 hover:text-green-500"
+                        }`
+                      }
+                    >
+                      Manage Registered Camps
                     </NavLink>
                   </div>
                 </>

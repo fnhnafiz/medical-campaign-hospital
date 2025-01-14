@@ -4,8 +4,10 @@ import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../Components/LoadingSpinner";
 import useAuth from "../Hooks/useAuth";
 import toast from "react-hot-toast";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
 
 const Login = () => {
+  const axiosPublic = useAxiosPublic();
   const { signIn, signInWithGoogle, loading, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,6 +24,12 @@ const Login = () => {
     try {
       //User Login
       await signIn(email, password);
+      const userData = {
+        name,
+        email,
+        role: "user",
+      };
+      await axiosPublic.post(`/users/${email}`, userData);
 
       navigate(from, { replace: true });
       toast.success("Login Successful");
@@ -34,7 +42,15 @@ const Login = () => {
   const handleGoogleSignIn = async () => {
     try {
       //User Registration using google
-      await signInWithGoogle();
+      await signInWithGoogle().then(async (res) => {
+        console.log(res);
+        const userData = {
+          name: res.user?.displayName,
+          email: res.user?.email,
+          role: "user",
+        };
+        await axiosPublic.post(`/users/${res.user?.email}`, userData);
+      });
       // save user info in db if the user is new
 
       navigate(from, { replace: true });

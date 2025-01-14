@@ -5,11 +5,18 @@ import navLogo from "../../public/CampMedLOGO.png";
 import avatarImg from "../../public/placeholder.jpg";
 import useAuth from "../Hooks/useAuth";
 import { AiOutlineMenu } from "react-icons/ai";
+import useAdmin from "../Hooks/useAdmin";
+import LoadingSpinner from "./LoadingSpinner";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logOut } = useAuth();
-  const isAdmin = true;
+  // const isAdmin = true;
+  const [organizer, isAdminLoading] = useAdmin();
+  console.log(organizer);
+  if (isAdminLoading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
 
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm px-4">
@@ -25,11 +32,11 @@ const Navbar = () => {
           <div className="flex items-center gap-8">
             <div>
               {/* Links in the center */}
-              <ul className="hidden lg:flex space-x-6">
+              <ul className="hidden lg:flex space-x-3">
                 <li>
                   <NavLink
                     to="/"
-                    className="hover:text-green-500 font-semibold ml-6"
+                    className="hover:text-green-500 font-semibold ml-3"
                   >
                     Home
                   </NavLink>
@@ -79,11 +86,11 @@ const Navbar = () => {
               {isOpen && (
                 <div className="absolute rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 top-12 text-sm">
                   <div className="flex flex-col cursor-pointer">
-                    <ul className="lg:hidden lg:flex lg-flex-col space-x-6">
+                    <ul className="lg:hidden lg:flex lg-flex-col  space-x-6 space-y-6 mb-4 pt-4">
                       <li>
                         <NavLink
                           to="/"
-                          className="hover:text-green-500 font-semibold ml-6"
+                          className="hover:text-green-500 font-semibold ml-[14px]"
                         >
                           Home
                         </NavLink>
@@ -91,7 +98,7 @@ const Navbar = () => {
                       <li>
                         <NavLink
                           to="/available-camps"
-                          className="hover:text-green-500 font-semibold"
+                          className="hover:text-green-500 font-semibold -ml-2"
                         >
                           Available Camps
                         </NavLink>
@@ -99,35 +106,66 @@ const Navbar = () => {
                       <li>
                         <NavLink
                           to="/login"
-                          className="hover:text-green-500 font-semibold"
+                          className="hover:text-green-500 font-semibold -ml-2"
                         >
                           Join Us
                         </NavLink>
                       </li>
-                      <li>
-                        {" "}
-                        <Link
-                          to="/"
-                          className="block md:hidden px-4 py-3 hover:bg-neutral-100 transition font-semibold"
-                        >
-                          Home
-                        </Link>
-                      </li>
                     </ul>
-
-                    {user ? (
+                    {!user ? (
                       <>
-                        {isAdmin ? (
+                        <Link
+                          to="/login"
+                          className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
+                        >
+                          Login
+                        </Link>
+                        <Link
+                          to="/register"
+                          className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
+                        >
+                          Sign Up
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        {organizer ? (
                           <Link
                             to="/dashboard/admin-home"
-                            className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
+                            className="px-4 py-3 hover:bg-neutral-100 transition font-semibold hover:text-green-500"
                           >
                             Dashboard
                           </Link>
                         ) : (
                           <Link
                             to="/dashboard/user-home"
-                            className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
+                            className="px-4 py-3 hover:bg-neutral-100 transition font-semibold hover:text-green-500"
+                          >
+                            Dashboard
+                          </Link>
+                        )}
+                        <div
+                          onClick={logOut}
+                          className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer hover:text-green-500"
+                        >
+                          Logout
+                        </div>
+                      </>
+                    )}
+
+                    {/* {user ? (
+                      <>
+                        {isAdmin ? (
+                          <Link
+                            to="/dashboard/admin-home"
+                            className="px-4 py-3 hover:bg-neutral-100 transition font-semibold hover:text-green-500"
+                          >
+                            Dashboard
+                          </Link>
+                        ) : (
+                          <Link
+                            to="/dashboard/user-home"
+                            className="px-4 py-3 hover:bg-neutral-100 transition font-semibold hover:text-green-500"
                           >
                             Dashboard
                           </Link>
@@ -135,7 +173,7 @@ const Navbar = () => {
 
                         <div
                           onClick={logOut}
-                          className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer"
+                          className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer hover:text-green-500"
                         >
                           Logout
                         </div>
@@ -155,7 +193,7 @@ const Navbar = () => {
                           Sign Up
                         </Link>
                       </>
-                    )}
+                    )} */}
                   </div>
                 </div>
               )}

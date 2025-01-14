@@ -4,10 +4,12 @@ import { TbFidgetSpinner } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 import { imageUpload } from "../Api/Utils";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
 
 const Register = () => {
   const { createUser, updateUserProfile, signInWithGoogle, loading } =
     useAuth();
+  const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,7 +32,13 @@ const Register = () => {
       // save user info in db if the user is new
       //   await saveUser({ ...result?.user, displayName: name, photoURL })
       navigate("/");
+      const userData = {
+        name,
+        email,
+        role: "user",
+      };
       toast.success("Signup Successful");
+      await axiosPublic.post(`/users/${email}`, userData);
     } catch (err) {
       console.log(err);
       toast.error(err?.message);
@@ -41,7 +49,14 @@ const Register = () => {
   const handleGoogleSignIn = async () => {
     try {
       //User Registration using google
-      await signInWithGoogle();
+      await signInWithGoogle().then(async (res) => {
+        const userData = {
+          name: res.user?.displayName,
+          email: res.user?.email,
+          role: "user",
+        };
+        await axiosPublic.post(`/users/${res.user?.email}`, userData);
+      });
 
       navigate("/");
       toast.success("Signup Successful");
