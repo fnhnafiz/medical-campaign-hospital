@@ -1,7 +1,48 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import useAuth from "../Hooks/useAuth";
+import { useForm } from "react-hook-form";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
+import toast from "react-hot-toast";
 
-const ParticipantModal = ({ isOpen, closeModal }) => {
+const ParticipantModal = ({ isOpen, closeModal, campDetails, refetch }) => {
+  const axiosPublic = useAxiosPublic();
+  const { user } = useAuth();
+  const { _id, campFees, campName, healthcareProfessional, location } =
+    campDetails;
+  const [gender, setGender] = useState("");
+  console.log(campDetails);
+  const { register, handleSubmit, reset } = useForm();
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    const joinCamp = {
+      joinCampId: _id,
+      campName: data.campName,
+      campFees: parseInt(data?.campFees),
+      location: data.location,
+      healthcareProfessional: data.healthcareProfessional,
+      participantName: data.participantName,
+      participantEmail: data.participantEmail,
+      participantAge: data.participantAge,
+      phoneNumber: data.phoneNumber,
+      gender: data.gender,
+      emergencyNumber: data.emergencyNumber,
+    };
+    const newJoinCamp = await axiosPublic.post("/register-campaign", joinCamp);
+    // console.log(newJoinCamp.data);
+    if (newJoinCamp.data.insertedId) {
+      toast.success("Join with campaign");
+      closeModal();
+      reset();
+      await axiosPublic.patch(`/participant-count/${_id}`).then((res) => {
+        if (res.data.modifiedCount > 0) {
+          refetch();
+        }
+      });
+    }
+  };
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -36,124 +77,176 @@ const ParticipantModal = ({ isOpen, closeModal }) => {
                   Join Camp
                 </Dialog.Title>
                 <div className="mt-4">
-                  <form className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Camp Name
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter camp name"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Camp Name */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Camp Name
+                        </label>
+                        <input
+                          {...register("campName")}
+                          readOnly
+                          defaultValue={campName}
+                          type="text"
+                          placeholder="Enter camp name"
+                          className="w-full border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      {/* Camp Fees */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Camp Fees
+                        </label>
+                        <input
+                          {...register("campFees")}
+                          readOnly
+                          defaultValue={campFees}
+                          type="text"
+                          placeholder="Enter camp fees"
+                          className="w-full border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      {/* Location */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Location
+                        </label>
+                        <input
+                          {...register("location")}
+                          readOnly
+                          defaultValue={location}
+                          type="text"
+                          placeholder="Enter location"
+                          className="w-full border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      {/* Healthcare Professional */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Healthcare Professional
+                        </label>
+                        <input
+                          {...register("healthcareProfessional")}
+                          readOnly
+                          defaultValue={healthcareProfessional}
+                          type="text"
+                          placeholder="Enter professional name"
+                          className="w-full border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      {/* Participant Name */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Participant Name
+                        </label>
+                        <input
+                          {...register("participantName")}
+                          readOnly
+                          defaultValue={user?.displayName}
+                          type="text"
+                          placeholder="Enter your name"
+                          className="w-full border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      {/* Participant Email */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Participant Email
+                        </label>
+                        <input
+                          {...register("participantEmail")}
+                          readOnly
+                          defaultValue={user?.email}
+                          type="email"
+                          placeholder="Enter your email"
+                          className="w-full border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      {/* Age */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Age
+                        </label>
+                        <input
+                          {...register("participantAge")}
+                          type="text"
+                          placeholder="Enter your age"
+                          className="w-full border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      {/* Phone Number */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Phone Number
+                        </label>
+                        <input
+                          {...register("phoneNumber")}
+                          type="number"
+                          placeholder="Enter phone number"
+                          className="w-full border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
+
+                      {/* Gender */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Gender
+                        </label>
+                        <select
+                          defaultValue={""}
+                          onChange={(e) => setGender(e.target.value)}
+                          {...register("gender")}
+                          name="gender"
+                          className="w-full border border-gray-300 rounded-md p-2"
+                        >
+                          <option value="" disabled>
+                            Select Gender
+                          </option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="other">Other</option>
+                        </select>
+                      </div>
+
+                      {/* Emergency Contact */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Emergency Contact
+                        </label>
+                        <input
+                          {...register("emergencyNumber")}
+                          type="number"
+                          placeholder="Enter emergency contact"
+                          className="w-full border border-gray-300 rounded-md p-2"
+                        />
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Camp Fees
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter camp fees"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Location
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter location"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Healthcare Professional
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter professional name"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Participant Name
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter your name"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Participant Email
-                      </label>
-                      <input
-                        type="email"
-                        placeholder="Enter your email"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Age
-                      </label>
-                      <input
-                        type="number"
-                        placeholder="Enter your age"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Phone Number
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter phone number"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Gender
-                      </label>
-                      <select className="w-full border border-gray-300 rounded-md p-2">
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Emergency Contact
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter emergency contact"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                      />
+
+                    {/* Buttons */}
+                    <div className="mt-6 flex justify-end space-x-4">
+                      <button
+                        type="button"
+                        className="px-4 py-2 bg-gray-300 rounded-md text-gray-700 hover:bg-gray-400"
+                        onClick={closeModal}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-4 py-2 bg-green-600 rounded-md text-white hover:bg-green-700"
+                      >
+                        Submit
+                      </button>
                     </div>
                   </form>
-                </div>
-                <div className="mt-6 flex justify-end space-x-4">
-                  <button
-                    type="button"
-                    className="px-4 py-2 bg-gray-300 rounded-md text-gray-700 hover:bg-gray-400"
-                    onClick={closeModal}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    className="px-4 py-2 bg-green-600 rounded-md text-white hover:bg-green-700"
-                  >
-                    Submit
-                  </button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
