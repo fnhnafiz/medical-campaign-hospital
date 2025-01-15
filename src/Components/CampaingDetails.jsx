@@ -8,8 +8,13 @@ import {
 import { useParams } from "react-router-dom";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import LoadingSpinner from "./LoadingSpinner";
+import ParticipantModal from "./ParticipantModal";
+import { useState } from "react";
 
 const CampaingDetails = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   const axiosPublic = useAxiosPublic();
   const { id } = useParams();
   const { data: campDetails = {}, isLoading } = useQuery({
@@ -22,18 +27,8 @@ const CampaingDetails = () => {
   if (isLoading) {
     return <LoadingSpinner></LoadingSpinner>;
   }
-  console.log(campDetails);
-  //   const campDetails = {
-  //     campName: "Jade Guerrac",
-  //     imageUrl: "https://i.ibb.co.com/qCyP5hw/healthcare-jobs-increase.jpg",
-  //     campFees: 98,
-  //     dateTime: "2020-09-25T14:32",
-  //     location: "Tenetur accusamus cu",
-  //     healthcareProfessional: "Jena Cox",
-  //     participantCount: 0,
-  //     description: "Iste cupidatat velit",
-  //     name: "Wendy Mooney to Vekend",
-  //   };
+  //   console.log(campDetails);
+
   return (
     <div className="pt-12">
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-10 px-5">
@@ -95,9 +90,16 @@ const CampaingDetails = () => {
 
             {/* Join Button */}
             <div className="text-center lg:text-left">
-              <button className="bg-green-600 text-white px-6 py-3 rounded-lg font-medium shadow-md hover:bg-green-700 transition">
+              <button
+                onClick={openModal}
+                className="bg-green-600 text-white px-6 py-3 rounded-lg font-medium shadow-md hover:bg-green-700 transition"
+              >
                 Join Camp
               </button>
+              <ParticipantModal
+                isOpen={isModalOpen}
+                closeModal={closeModal}
+              ></ParticipantModal>
             </div>
           </div>
         </div>
