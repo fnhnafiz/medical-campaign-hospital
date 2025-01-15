@@ -1,10 +1,38 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
 import useCampaings from "../../Hooks/useCampaings";
 import { Link } from "react-router-dom";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const ManageCamp = () => {
-  const [campaign] = useCampaings();
-  console.log(campaign);
+  const [campaign, , refetch] = useCampaings();
+  // console.log(campaign);
+  const axiosSecure = useAxiosSecure();
+
+  const handleCampaignDelete = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await axiosSecure.delete(`/camps/${id}`).then((res) => {
+          if (res.data.deletedCount > 0) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+            refetch();
+          }
+        });
+      }
+    });
+  };
   return (
     <div className="overflow-x-auto">
       <table className="table">
@@ -32,20 +60,20 @@ const ManageCamp = () => {
               <td>{camp?.location}</td>
               <td>{camp?.healthcareProfessional}</td>
               <td className="">
-                <Link className="flex items-center gap-1">
-                  <button>Update</button>
-                  <span>
-                    <FaEdit />
-                  </span>
+                <Link to={`/dashboard/update-camp/${camp._id}`}>
+                  <button className="flex items-center gap-1">
+                    Update <FaEdit />
+                  </button>
                 </Link>
               </td>
               <td>
-                <Link className="flex items-center gap-1 ">
-                  {" "}
-                  <button className="">Delete</button>
-                  <span>
-                    <FaTrash />
-                  </span>
+                <Link>
+                  <button
+                    onClick={() => handleCampaignDelete(camp._id)}
+                    className="flex items-center gap-1"
+                  >
+                    Delete <FaTrash />
+                  </button>
                 </Link>
               </td>
             </tr>

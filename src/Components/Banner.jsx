@@ -21,14 +21,32 @@ const Banner = () => {
   return (
     <div className="">
       <Slider {...settings}>
-        <div>
+        <div className="relative">
           <img src={slider1} alt="" />
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
+            <h1 className="text-5xl font-bold mb-5">Medical Campaign</h1>
+            <button className="btn  text-lg font-medium bg-blue-500 hover:bg-blue-600 rounded">
+              Join with us
+            </button>
+          </div>
         </div>
-        <div>
+        <div className="relative">
           <img src={slider2} alt="" />
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
+            <h1 className="text-5xl font-bold mb-5">Medical Campaign</h1>
+            <button className="btn  text-lg font-medium bg-blue-500 hover:bg-blue-600 rounded">
+              Join with us
+            </button>
+          </div>
         </div>
-        <div>
+        <div className="relative">
           <img src={slider3} alt="" />
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
+            <h1 className="text-5xl font-bold mb-5">Medical Campaign</h1>
+            <button className="btn  text-lg font-medium bg-blue-500 hover:bg-blue-600 rounded">
+              Join with us
+            </button>
+          </div>
         </div>
       </Slider>
     </div>

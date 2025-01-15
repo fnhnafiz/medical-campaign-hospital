@@ -17,6 +17,8 @@ import AddCamp from "../Dashboard/Admin/AddCamp";
 import ParticipantProfile from "../Dashboard/UserPages/ParticipantProfile";
 import RegisterCamps from "../Dashboard/UserPages/RegisterCamps";
 import PaymentHistory from "../Dashboard/UserPages/PaymentHistory";
+import UpdatedCampaign from "../Dashboard/AdminPages/UpdatedCampaign";
+import CampaingDetails from "../Components/CampaingDetails";
 
 const Routes = createBrowserRouter([
   {
@@ -30,6 +32,10 @@ const Routes = createBrowserRouter([
       {
         path: "/available-camps",
         element: <AvailableCampaigns></AvailableCampaigns>,
+      },
+      {
+        path: "/campaign-details/:id",
+        element: <CampaingDetails></CampaingDetails>,
       },
     ],
   },
@@ -77,6 +83,14 @@ const Routes = createBrowserRouter([
         element: (
           <AdminRoutes>
             <ManageRegisterCamp></ManageRegisterCamp>
+          </AdminRoutes>
+        ),
+      },
+      {
+        path: "update-camp/:id",
+        element: (
+          <AdminRoutes>
+            <UpdatedCampaign></UpdatedCampaign>
           </AdminRoutes>
         ),
       },

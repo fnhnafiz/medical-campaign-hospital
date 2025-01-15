@@ -46,7 +46,7 @@ const CampCard = ({ camp }) => {
             <strong>Participants:</strong> {participantCount}
           </span>
           <div className="">
-            <Link to={`/camp-details/${_id}`}>
+            <Link to={`/campaign-details/${_id}`}>
               <button className="bg-gray-100 text-green-500 border border-green-500 px-4 py-2 rounded-md hover:bg-blue-50 hover:border-green-600 transition">
                 Details
               </button>
