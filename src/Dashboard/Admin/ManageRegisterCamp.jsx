@@ -1,35 +1,33 @@
 import { FaCheck } from "react-icons/fa";
 import LoadingSpinner from "../../Components/LoadingSpinner";
-import useAxiosPublic from "../../Hooks/useAxiosPublic";
-import { useQuery } from "@tanstack/react-query";
 import { MdPending } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
+import useRegister from "../../Hooks/useRegister";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const ManageRegisterCamp = () => {
-  const axiosSecure = useAxiosPublic();
-  const {
-    data: registerCampaign = [],
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["campaign"],
-    queryFn: async () => {
-      const res = await axiosSecure.get("/register-campaign");
-      return res.data;
-    },
-  });
+  const axiosSecure = useAxiosSecure();
+  const [registerCampaign, isLoading, refetch] = useRegister();
 
   // Handle confirmation status change
-  const handleConfirmation = (id) => {
+  const handleConfirmation = async (id, updateStatus) => {
     // Add your confirmation logic here
-    console.log("Confirm registration:", id);
+    console.log("Confirm registration:", id, updateStatus);
+    const res = await axiosSecure.patch(`/register-campaign/${id}`, {
+      confirmationStatus: updateStatus,
+    });
+    // console.log("I confirmation status ", res.data);
+    if (res.data.modifiedCount > 0) {
+      toast.success("Confirm Successfully!!");
+      refetch();
+    }
   };
 
   // Handle cancel registration
   const handleCancel = async (id) => {
     // Add your cancel logic here
-    console.log("Cancel registration:", id);
+    // console.log("Cancel registration:", id);
     const res = await axiosSecure.delete(`/register-campaign/${id}`);
     if (res.data.deletedCount > 0) {
       toast.success("Deleted Campaign");
@@ -37,7 +35,7 @@ const ManageRegisterCamp = () => {
     }
   };
 
-  console.log(registerCampaign);
+  // console.log(registerCampaign);
   if (isLoading) return <LoadingSpinner />;
   return (
     <div className="w-full overflow-x-auto bg-white rounded-lg shadow">
@@ -97,7 +95,7 @@ const ManageRegisterCamp = () => {
                   )}
                 </span>
               </td>
-              <td className="px-6 py-4 text-sm">
+              {/* <td className="px-6 py-4 text-sm">
                 {registration.confirmationStatus === "pending" ? (
                   <button
                     onClick={() => handleConfirmation(registration._id)}
@@ -112,6 +110,33 @@ const ManageRegisterCamp = () => {
                     Confirmed
                   </span>
                 )}
+              </td> */}
+              <td
+                className={`px-4 py-3 border-x border-gray-200 ${
+                  registration?.confirmationStatus === "confirmed"
+                    ? "bg-green-50"
+                    : "bg-gray-50"
+                }`}
+              >
+                <select
+                  disabled={
+                    registration?.confirmationStatus === "confirmed" ||
+                    registration?.paymentStatus === "unpaid"
+                  }
+                  className={`w-full rounded-md px-3 py-1.5 text-sm transition-colors duration-200 ${
+                    registration?.confirmationStatus === "confirmed"
+                      ? "bg-green-100 text-green-700 border-green-300"
+                      : "bg-white hover:bg-gray-100 border-gray-300"
+                  } border focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none`}
+                  defaultValue={registration?.confirmationStatus}
+                  onChange={(e) =>
+                    handleConfirmation(registration._id, e.target.value)
+                  }
+                  name="status"
+                >
+                  <option value="pending">Pending</option>
+                  <option value="confirmed">Confirm</option>
+                </select>
               </td>
               <td className="px-6 py-4 text-sm">
                 {registration.paymentStatus === "paid" &&
