@@ -1,14 +1,18 @@
-import { FaCheck, FaEdit, FaTrash } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
 import { MdPending } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
+import toast from "react-hot-toast";
 
 const ManageRegisterCamp = () => {
   const axiosSecure = useAxiosPublic();
-  const { data: registerCampaign = [], isLoading } = useQuery({
+  const {
+    data: registerCampaign = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["campaign"],
     queryFn: async () => {
       const res = await axiosSecure.get("/register-campaign");
@@ -23,9 +27,14 @@ const ManageRegisterCamp = () => {
   };
 
   // Handle cancel registration
-  const handleCancel = (id) => {
+  const handleCancel = async (id) => {
     // Add your cancel logic here
     console.log("Cancel registration:", id);
+    const res = await axiosSecure.delete(`/register-campaign/${id}`);
+    if (res.data.deletedCount > 0) {
+      toast.success("Deleted Campaign");
+      refetch();
+    }
   };
 
   console.log(registerCampaign);
@@ -105,22 +114,30 @@ const ManageRegisterCamp = () => {
                 )}
               </td>
               <td className="px-6 py-4 text-sm">
-                <button
-                  onClick={() => handleCancel(registration._id)}
-                  disabled={
-                    registration.paymentStatus === "paid" &&
-                    registration.confirmationStatus === "confirmed"
-                  }
-                  className={`${
-                    registration.paymentStatus === "paid" &&
-                    registration.confirmationStatus === "confirmed"
-                      ? "text-gray-400 cursor-not-allowed"
-                      : "text-red-600 hover:text-red-900"
-                  } font-medium p-1 hover:bg-red-50 rounded-full transition-colors`}
-                >
-                  {/* <RxCross2 className="text-xl" /> */}
-                  <FaCheck className="text-xl text-green-600" />
-                </button>
+                {registration.paymentStatus === "paid" &&
+                registration.confirmationStatus === "confirmed" ? (
+                  <button
+                    disabled={
+                      registration.paymentStatus === "paid" &&
+                      registration.confirmationStatus === "confirmed"
+                    }
+                    className={`${
+                      registration.paymentStatus === "paid" &&
+                      registration.confirmationStatus === "confirmed"
+                        ? "text-gray-400 cursor-not-allowed"
+                        : "text-red-600 hover:text-red-900"
+                    } font-medium p-1 hover:bg-red-50 rounded-full transition-colors flex gap-2`}
+                  >
+                    <FaCheck className="text-xl text-green-600" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleCancel(registration._id)}
+                    className="text-red-600 hover:text-red-900 font-medium p-1 hover:bg-red-50 rounded-full transition-colors flex gap-2"
+                  >
+                    <RxCross2 className="text-xl" />
+                  </button>
+                )}
               </td>
             </tr>
           ))}

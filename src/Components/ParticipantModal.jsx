@@ -31,7 +31,11 @@ const ParticipantModal = ({ isOpen, closeModal, campDetails, refetch }) => {
       paymentStatus: "unpaid",
       confirmationStatus: "pending",
     };
-    const newJoinCamp = await axiosPublic.post("/register-campaign", joinCamp);
+    const newJoinCamp = await axiosPublic.post(
+      `/register-campaign/${data.participantEmail}`,
+      joinCamp
+    );
+    if (newJoinCamp.data.message) return toast.error(newJoinCamp.data.message);
     // console.log(newJoinCamp.data);
     if (newJoinCamp.data.insertedId) {
       toast.success("Join with campaign");

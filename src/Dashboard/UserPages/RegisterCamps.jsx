@@ -4,13 +4,18 @@ import useAuth from "../../Hooks/useAuth";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 import { useState } from "react";
 import { CreditCard, X } from "lucide-react";
+import toast from "react-hot-toast";
 
 const RegisterCamps = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const { data: registerCamps = [], isLoading } = useQuery({
+  const {
+    data: registerCamps = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["camps", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/register-campaign/${user?.email}`);
@@ -32,9 +37,15 @@ const RegisterCamps = () => {
   // });
 
   // Handle cancel click
-  const handleCancel = (id) => {
+  const handleCancel = async (id) => {
     // Add your cancel logic here
     console.log("Cancel for ID:", id);
+    const res = await axiosSecure.delete(`/register-campaign/${id}`);
+    console.log(res.data);
+    if (res.data.deletedCount > 0) {
+      toast.success("Remove");
+      refetch();
+    }
   };
 
   // Handle feedback click
@@ -68,23 +79,26 @@ const RegisterCamps = () => {
       <table className="w-full text-sm text-left">
         <thead className="text-white uppercase bg-blue-600">
           <tr>
-            <th scope="col" className="px-4 py-3">
+            <th scope="col" className="px-4 py-3 border-r border-red-500">
               Camp Name
             </th>
-            <th scope="col" className="px-4 py-3">
+            <th scope="col" className="px-4 py-3 border-r border-red-500">
               Camp Fees
             </th>
-            <th scope="col" className="px-4 py-3">
+            <th scope="col" className="px-4 py-3 border-r border-red-500">
               Participant Name
             </th>
-            <th scope="col" className="px-4 py-3">
+            <th scope="col" className="px-4 py-3 border-r border-red-500">
               Payment Status
             </th>
-            <th scope="col" className="px-4 py-3">
+            <th scope="col" className="px-4 py-3 border-r border-red-500">
               Confirmation Status
             </th>
-            <th scope="col" className="px-4 py-3">
+            <th scope="col" className="px-4 py-3 border-r border-red-500">
               Actions
+            </th>
+            <th scope="col" className="px-4 py-3 border-r border-red-500">
+              Feedback
             </th>
           </tr>
         </thead>
@@ -133,15 +147,19 @@ const RegisterCamps = () => {
                 >
                   Cancel
                 </button>
+              </td>
+              <td className="text-center">
                 {camp.paymentStatus === "paid" &&
-                  camp.confirmationStatus === "confirmed" && (
-                    <button
-                      onClick={() => handleFeedback(camp._id)}
-                      className="px-4 py-2 text-sm font-medium text-white bg-purple-500 rounded-lg hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-300"
-                    >
-                      Feedback
-                    </button>
-                  )}
+                camp.confirmationStatus === "confirmed" ? (
+                  <button
+                    onClick={() => handleFeedback(camp._id)}
+                    className="px-4 py-2 text-sm font-medium text-white bg-purple-500 rounded-lg hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                  >
+                    Feedback
+                  </button>
+                ) : (
+                  "N/A"
+                )}
               </td>
             </tr>
           ))}
