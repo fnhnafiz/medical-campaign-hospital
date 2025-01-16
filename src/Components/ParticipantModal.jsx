@@ -28,6 +28,8 @@ const ParticipantModal = ({ isOpen, closeModal, campDetails, refetch }) => {
       phoneNumber: data.phoneNumber,
       gender: data.gender,
       emergencyNumber: data.emergencyNumber,
+      paymentStatus: "unpaid",
+      confirmationStatus: "pending",
     };
     const newJoinCamp = await axiosPublic.post("/register-campaign", joinCamp);
     // console.log(newJoinCamp.data);
@@ -175,7 +177,7 @@ const ParticipantModal = ({ isOpen, closeModal, campDetails, refetch }) => {
                           Age
                         </label>
                         <input
-                          {...register("participantAge")}
+                          {...register("participantAge", { required: true })}
                           type="text"
                           placeholder="Enter your age"
                           className="w-full border border-gray-300 rounded-md p-2"
@@ -188,7 +190,7 @@ const ParticipantModal = ({ isOpen, closeModal, campDetails, refetch }) => {
                           Phone Number
                         </label>
                         <input
-                          {...register("phoneNumber")}
+                          {...register("phoneNumber", { required: true })}
                           type="number"
                           placeholder="Enter phone number"
                           className="w-full border border-gray-300 rounded-md p-2"
@@ -203,7 +205,7 @@ const ParticipantModal = ({ isOpen, closeModal, campDetails, refetch }) => {
                         <select
                           defaultValue={""}
                           onChange={(e) => setGender(e.target.value)}
-                          {...register("gender")}
+                          {...register("gender", { required: true })}
                           name="gender"
                           className="w-full border border-gray-300 rounded-md p-2"
                         >
@@ -222,7 +224,7 @@ const ParticipantModal = ({ isOpen, closeModal, campDetails, refetch }) => {
                           Emergency Contact
                         </label>
                         <input
-                          {...register("emergencyNumber")}
+                          {...register("emergencyNumber", { required: true })}
                           type="number"
                           placeholder="Enter emergency contact"
                           className="w-full border border-gray-300 rounded-md p-2"

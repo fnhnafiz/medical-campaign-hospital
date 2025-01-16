@@ -28,7 +28,7 @@ const CampaingDetails = () => {
     refetch,
     isLoading,
   } = useQuery({
-    querykey: ["camp", id],
+    querykey: [id, "camp"],
     queryFn: async () => {
       const res = await axiosPublic.get(`/available-camp/${id}`);
       return res?.data;

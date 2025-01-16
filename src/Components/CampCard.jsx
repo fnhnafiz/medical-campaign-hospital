@@ -36,7 +36,7 @@ const CampCard = ({ camp }) => {
         <div className="text-sm text-gray-500 mb-4">
           <strong>Date:</strong> {new Date(dateTime).toLocaleDateString()}{" "}
           <br />
-          <strong>Time:</strong> {new Date(dateTime).toLocaleTimeString()}
+          {/* <strong>Time:</strong> {new Date(dateTime).toLocaleTimeString()} */}
         </div>
         <div className="text-sm text-gray-500 mb-4">
           <strong>Healthcare Professional:</strong> {healthcareProfessional}
