@@ -5,8 +5,11 @@ import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
 import useRegister from "../../Hooks/useRegister";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useAuth from "../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 const ManageRegisterCamp = () => {
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [registerCampaign, isLoading, refetch] = useRegister();
 
@@ -30,13 +33,42 @@ const ManageRegisterCamp = () => {
 
   // Handle cancel registration
   const handleCancel = async (id) => {
-    // Add your cancel logic here
-    // console.log("Cancel registration:", id);
-    const res = await axiosSecure.delete(`/register-campaign/${id}`);
-    if (res.data.deletedCount > 0) {
-      toast.success("Deleted Campaign");
-      refetch();
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be see this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        // Add your cancel logic here
+        // console.log("Cancel registration:", id);
+        const res = await axiosSecure.delete(`/register-campaign/${id}`);
+
+        const userData = {
+          name: user?.displayName,
+          email: user?.email,
+          message: "Your join campaign remove from med campaings",
+        };
+        const trashData = await axiosSecure.post(
+          `/deleted-trash-data`,
+          userData
+        );
+        console.log(trashData.data);
+
+        if (res.data.deletedCount > 0 && trashData.data.insertedId) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Deleted pending data and send to the notification user",
+            icon: "success",
+          });
+          // toast.success("Deleted Campaign");
+          refetch();
+        }
+      }
+    });
   };
 
   // console.log(registerCampaign);

@@ -6,10 +6,12 @@ import avatarImg from "../../public/placeholder.jpg";
 import useAuth from "../Hooks/useAuth";
 import { AiOutlineMenu } from "react-icons/ai";
 import useAdmin from "../Hooks/useAdmin";
+import { IoIosNotifications } from "react-icons/io";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logOut } = useAuth();
+  // console.log(user);
   // const isAdmin = true;
   const [organizer] = useAdmin();
   // console.log(organizer);
@@ -60,6 +62,14 @@ const Navbar = () => {
             {/* Dropdown Menu */}
             <div className="relative">
               <div className="flex flex-row items-center gap-3">
+                {!organizer && (
+                  <div>
+                    <button className="text-2xl mt-2">
+                      <IoIosNotifications />
+                    </button>
+                  </div>
+                )}
+
                 {/* Dropdown btn */}
                 <div
                   onClick={() => setIsOpen(!isOpen)}

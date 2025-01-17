@@ -1,8 +1,9 @@
+import { FaSearch } from "react-icons/fa";
 import CampCard from "../Components/CampCard";
 import LoadingSpinner from "../Components/LoadingSpinner";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
-import { Search, LayoutGrid, List } from "lucide-react";
+import { LayoutGrid, List } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const AvailableCampaigns = () => {
@@ -42,7 +43,7 @@ const AvailableCampaigns = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <div>
+      <div className="px-6">
         {/* Header Section */}
         <h1 className="text-5xl font-bold text-center pt-20 mb-12">
           Available Campaigns
@@ -60,7 +61,8 @@ const AvailableCampaigns = () => {
               placeholder="Search campaigns..."
               className="w-full px-4 py-2 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+            <FaSearch className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+            {/* <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" /> */}
           </div>
 
           {/* Sort Dropdown */}
@@ -93,7 +95,13 @@ const AvailableCampaigns = () => {
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6  px-6  my-12">
+      <div
+        className={`grid gap-6 px-6  my-12 ${
+          isThreeColumns
+            ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+            : "grid-cols-1 md:grid-cols-2"
+        }`}
+      >
         {camps?.map((camp) => (
           <CampCard key={camp._id} camp={camp}></CampCard>
         ))}
