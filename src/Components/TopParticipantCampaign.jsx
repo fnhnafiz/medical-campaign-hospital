@@ -1,12 +1,23 @@
-import useCampaings from "../Hooks/useCampaings";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
 import CampCard from "./CampCard";
+import LoadingSpinner from "./LoadingSpinner";
 
 const TopParticipantCampaign = () => {
-  const [campaing] = useCampaings();
-  const sortedCampaigns = [...campaing].sort(
+  const axiosPublic = useAxiosPublic();
+  // const [campaing] = useCampaings();
+  const { data: campaign = [], isLoading } = useQuery({
+    queryKey: ["camps"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/available-camps");
+      return res.data;
+    },
+  });
+  const sortedCampaigns = [...campaign].sort(
     (a, b) => b.participantCount - a.participantCount
   );
   const topParticipantCampaigns = sortedCampaigns.slice(0, 6);
+  if (isLoading) return <LoadingSpinner />;
   return (
     <div>
       <h1 className="font-bold text-4xl text-center py-5 uppercase">

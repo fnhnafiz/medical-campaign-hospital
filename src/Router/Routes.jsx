@@ -58,7 +58,9 @@ const Routes = createBrowserRouter([
         path: "add-camp",
         element: (
           <AdminRoutes>
-            <AddCamp></AddCamp>
+            <PrivateRoutes>
+              <AddCamp></AddCamp>
+            </PrivateRoutes>
           </AdminRoutes>
         ),
       },

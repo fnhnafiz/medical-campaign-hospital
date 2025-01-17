@@ -9,6 +9,7 @@ const useRegister = () => {
     refetch,
   } = useQuery({
     queryKey: ["registerCampaign"],
+    enabled: !!localStorage.getItem("token"),
     queryFn: async () => {
       const res = await axiosSecure.get("/register-campaign");
       return res.data;

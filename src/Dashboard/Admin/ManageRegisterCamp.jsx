@@ -14,9 +14,13 @@ const ManageRegisterCamp = () => {
   const handleConfirmation = async (id, updateStatus) => {
     // Add your confirmation logic here
     console.log("Confirm registration:", id, updateStatus);
-    const res = await axiosSecure.patch(`/register-campaign/${id}`, {
-      confirmationStatus: updateStatus,
-    });
+    const res = await axiosSecure.patch(
+      `/register-campaign/${id}`,
+
+      {
+        confirmationStatus: updateStatus,
+      }
+    );
     // console.log("I confirmation status ", res.data);
     if (res.data.modifiedCount > 0) {
       toast.success("Confirm Successfully!!");

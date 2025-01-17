@@ -177,7 +177,7 @@ const RegisterCamps = () => {
         <>
           {/* Modal Backdrop */}
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            className="fixed inset-0 bg-black bg-opacity-70 z-40"
             onClick={handleCloseModal}
           />
 
@@ -205,6 +205,7 @@ const RegisterCamps = () => {
                   </label>
                   <div className="relative">
                     <input
+                      required
                       type="text"
                       placeholder="1234 5678 9012 3456"
                       className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -219,6 +220,7 @@ const RegisterCamps = () => {
                       Expiry Date
                     </label>
                     <input
+                      required
                       type="text"
                       placeholder="MM/YY"
                       className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -229,6 +231,7 @@ const RegisterCamps = () => {
                       CVC
                     </label>
                     <input
+                      required
                       type="text"
                       placeholder="123"
                       className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -241,6 +244,7 @@ const RegisterCamps = () => {
                     Name on Card
                   </label>
                   <input
+                    required
                     type="text"
                     placeholder="John Doe"
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -272,7 +276,7 @@ const RegisterCamps = () => {
         <>
           {/* Modal Backdrop */}
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            className="fixed inset-0 bg-black bg-opacity-70 z-40"
             onClick={handleCloseModal}
           />
 
@@ -281,8 +285,10 @@ const RegisterCamps = () => {
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
               {/* Modal Header */}
               <div className="flex items-center justify-between p-4 border-b">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Provide your feedback here!!
+                <h3 className=" font-semibold text-gray-900 uppercase">
+                  Hi{" "}
+                  <span className="text-green-500 ">{user?.displayName}</span>{" "}
+                  please provide your feedback
                 </h3>
                 <button
                   onClick={handleCloseModal}
@@ -297,12 +303,14 @@ const RegisterCamps = () => {
                 {/* Rating Section */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Rating
+                    Ratings
                   </label>
                   <input
-                    {...register("rating", { required: true })}
+                    {...register("rating")}
                     name="rating"
                     type="number"
+                    min="1"
+                    max="5"
                     className="w-full p-3 border rounded-lg"
                   />
                 </div>
