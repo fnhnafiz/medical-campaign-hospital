@@ -5,13 +5,14 @@ import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
 import useRegister from "../../Hooks/useRegister";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
-import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import InputSearch from "../../Components/InputSearch";
+import { useState } from "react";
 
 const ManageRegisterCamp = () => {
-  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [registerCampaign, isLoading, refetch] = useRegister();
+  const [searchText, setSearchText] = useState();
+  const [registerCampaign, isLoading, refetch] = useRegister(searchText);
 
   // Handle confirmation status change
   const handleConfirmation = async (id, updateStatus) => {
@@ -32,7 +33,9 @@ const ManageRegisterCamp = () => {
   };
 
   // Handle cancel registration
-  const handleCancel = async (id) => {
+  const handleCancel = async (item) => {
+    const { participantEmail, campName, _id, participantName } = item;
+    // console.log(item);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be see this!",
@@ -45,18 +48,18 @@ const ManageRegisterCamp = () => {
       if (result.isConfirmed) {
         // Add your cancel logic here
         // console.log("Cancel registration:", id);
-        const res = await axiosSecure.delete(`/register-campaign/${id}`);
+        const res = await axiosSecure.delete(`/register-campaign/${_id}`);
 
         const userData = {
-          name: user?.displayName,
-          email: user?.email,
-          message: "Your join campaign remove from med campaings",
+          name: participantName,
+          email: participantEmail,
+          message: `your ${campName} has been rejected for pending`,
         };
         const trashData = await axiosSecure.post(
           `/deleted-trash-data`,
           userData
         );
-        console.log(trashData.data);
+        // console.log(trashData.data);
 
         if (res.data.deletedCount > 0 && trashData.data.insertedId) {
           Swal.fire({
@@ -72,9 +75,10 @@ const ManageRegisterCamp = () => {
   };
 
   // console.log(registerCampaign);
-  if (isLoading) return <LoadingSpinner />;
+  // if (isLoading) return <LoadingSpinner />;
   return (
     <div className="w-full overflow-x-auto bg-white rounded-lg shadow">
+      <InputSearch onSearch={setSearchText} />
       <table className="w-full">
         <thead className="bg-gray-800 text-white">
           <tr>
@@ -193,7 +197,7 @@ const ManageRegisterCamp = () => {
                   </button>
                 ) : (
                   <button
-                    onClick={() => handleCancel(registration._id)}
+                    onClick={() => handleCancel(registration)}
                     className="text-red-600 hover:text-red-900 font-medium p-1 hover:bg-red-50 rounded-full transition-colors flex gap-2"
                   >
                     <RxCross2 className="text-xl" />

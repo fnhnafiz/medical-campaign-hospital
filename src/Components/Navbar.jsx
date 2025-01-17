@@ -7,14 +7,42 @@ import useAuth from "../Hooks/useAuth";
 import { AiOutlineMenu } from "react-icons/ai";
 import useAdmin from "../Hooks/useAdmin";
 import { IoIosNotifications } from "react-icons/io";
+import { IoIosClose } from "react-icons/io";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const axiosPublic = useAxiosPublic();
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const { user, logOut } = useAuth();
   // console.log(user);
   // const isAdmin = true;
   const [organizer] = useAdmin();
   // console.log(organizer);
+
+  const { data: notifications } = useQuery({
+    queryKey: ["notification", user?.email],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/deleted-trash-data/${user?.email}`);
+      return res.data;
+    },
+  });
+
+  // const notifications = [
+  //   {
+  //     title: "New Camp Registration",
+  //     message: "You've successfully registered for Summer Medical Camp 2024",
+  //     time: "2 minutes ago",
+  //     read: false,
+  //   },
+  //   {
+  //     title: "Payment Confirmed",
+  //     message: "Your payment for Basic Life Support Course has been confirmed",
+  //     time: "1 hour ago",
+  //     read: true,
+  //   },
+  // ];
 
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm px-4">
@@ -64,10 +92,76 @@ const Navbar = () => {
               <div className="flex flex-row items-center gap-3">
                 {!organizer && (
                   <div>
-                    <button className="text-2xl mt-2">
-                      <IoIosNotifications />
+                    <button
+                      onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                      className="text-2xl mt-2 relative"
+                    >
+                      <IoIosNotifications />{" "}
+                      <span className="text-xs absolute -top-2 -right-1 font-bold text-red-500">
+                        {notifications?.length}
+                      </span>
                     </button>
                   </div>
+                )}
+
+                {isNotificationOpen && (
+                  <>
+                    {/* Backdrop */}
+                    <div
+                      className="fixed inset-0 bg-black/30"
+                      onClick={() => setIsNotificationOpen(false)}
+                      aria-hidden="true"
+                    />
+
+                    {/* Notification Panel */}
+                    <div className="absolute right-0 top-2 mt-2 w-80 bg-white rounded-lg shadow-lg overflow-hidden z-50">
+                      <div className="p-4 border-b flex items-center justify-between">
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          Notifications
+                        </h3>
+                        <button
+                          onClick={() => setIsNotificationOpen(false)}
+                          className="text-gray-500 hover:text-gray-700"
+                        >
+                          <IoIosClose className="text-2xl" />
+                        </button>
+                      </div>
+
+                      <div className="max-h-[400px] mt-8">
+                        {notifications.length === 0 ? (
+                          <div className="p-4 text-center text-gray-500">
+                            No new notifications
+                          </div>
+                        ) : (
+                          <div className="divide-y">
+                            {notifications.map((notification, index) => (
+                              <div
+                                key={index}
+                                className="p-4 hover:bg-gray-50 transition-colors"
+                              >
+                                <div className="flex gap-4 items-start">
+                                  <div className="flex-1">
+                                    <p className="text-sm font-medium text-gray-900">
+                                      {notification.name}
+                                    </p>
+                                    <p className="text-sm text-gray-500 mt-1">
+                                      {notification.message}
+                                    </p>
+                                    <p className="text-xs text-gray-400 mt-1">
+                                      {/* {notification.time} */}2 minutes ago
+                                    </p>
+                                  </div>
+                                  {!notification.read && (
+                                    <span className="w-2 h-2 bg-green-500 rounded-full" />
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </>
                 )}
 
                 {/* Dropdown btn */}

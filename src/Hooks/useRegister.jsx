@@ -1,17 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "./useAxiosSecure";
 
-const useRegister = () => {
+const useRegister = (searchText = "") => {
   const axiosSecure = useAxiosSecure();
   const {
     data: registerCampaign = [],
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["registerCampaign"],
+    queryKey: ["registerCampaign", searchText],
     enabled: !!localStorage.getItem("token"),
     queryFn: async () => {
-      const res = await axiosSecure.get("/register-campaign");
+      const res = await axiosSecure.get(
+        `/register-campaign?search=${searchText}`
+      );
       return res.data;
     },
   });
