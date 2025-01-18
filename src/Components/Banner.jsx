@@ -23,28 +23,45 @@ const Banner = () => {
       <Slider {...settings}>
         <div className="relative">
           <img src={slider1} alt="" />
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
-            <h1 className="text-5xl font-bold mb-5">Medical Campaign</h1>
-            <button className="btn  text-lg font-medium bg-blue-500 hover:bg-blue-600 rounded">
-              Join with us
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white bg-black bg-opacity-40">
+            <h1 className="text-5xl font-bold mb-4">
+              Volunteer and Save Lives
+            </h1>
+            <p className="text-lg mb-6 max-w-2xl">
+              Your time and dedication can help deliver much-needed healthcare
+              services to those who need them the most. Join our team today!
+            </p>
+            <button className=" px-6 py-3 text-lg font-medium bg-green-500 hover:bg-green-600 rounded shadow">
+              Volunteer Now
             </button>
           </div>
         </div>
         <div className="relative">
           <img src={slider2} alt="" />
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
-            <h1 className="text-5xl font-bold mb-5">Medical Campaign</h1>
-            <button className="btn  text-lg font-medium bg-blue-500 hover:bg-blue-600 rounded">
-              Join with us
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white bg-black bg-opacity-40">
+            <h1 className="text-5xl font-bold mb-4">
+              Join Our Medical Mission
+            </h1>
+            <p className="text-lg mb-6 max-w-2xl">
+              Be part of a life-changing initiative that provides essential
+              healthcare to underserved communities. Together, we can make a
+              difference!
+            </p>
+            <button className=" px-6 py-3 text-lg font-medium bg-blue-500 hover:bg-blue-600 rounded shadow">
+              Join Now
             </button>
           </div>
         </div>
         <div className="relative">
           <img src={slider3} alt="" />
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
-            <h1 className="text-5xl font-bold mb-5">Medical Campaign</h1>
-            <button className="btn  text-lg font-medium bg-blue-500 hover:bg-blue-600 rounded">
-              Join with us
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white bg-black bg-opacity-40">
+            <h1 className="text-5xl font-bold mb-4">Support Our Cause</h1>
+            <p className="text-lg mb-6 max-w-2xl">
+              Your generous contributions help us reach more people and deliver
+              quality healthcare services where they are needed most.
+            </p>
+            <button className="px-6 py-3 text-lg font-medium bg-red-500 hover:bg-red-600 rounded shadow">
+              Register Now
             </button>
           </div>
         </div>

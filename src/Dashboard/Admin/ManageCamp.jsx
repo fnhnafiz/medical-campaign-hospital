@@ -9,9 +9,14 @@ import useCampaings from "../../Hooks/useCampaings";
 import { Link } from "react-router-dom";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import InputSearch from "../../Components/InputSearch";
+import SectionTitle from "../../Components/SectionTitle";
+import { useState } from "react";
 
 const ManageCamp = () => {
-  const [campaign, , refetch] = useCampaings();
+  const [searchText, setSearchText] = useState("");
+  const [campaign, , refetch] = useCampaings({ searchText });
+  console.log(searchText);
   // console.log(campaign);
   const axiosSecure = useAxiosSecure();
 
@@ -41,6 +46,11 @@ const ManageCamp = () => {
   };
   return (
     <div className="w-full overflow-x-auto bg-white rounded-lg shadow-md">
+      <SectionTitle
+        heading="You can Manage all Participant campaign"
+        subHeading="Compellingly whiteboard enterprise leadership skills and client-centric imperatives. Seamlessly aggregate cooperative e-business via wireless intellectual."
+      ></SectionTitle>
+      <InputSearch onSearch={setSearchText} />
       <table className="w-full">
         <thead className="bg-gradient-to-r from-blue-600 to-blue-800">
           <tr>

@@ -1,4 +1,5 @@
 import Banner from "../Components/Banner";
+import Feedback from "../Components/Feedback";
 import TopParticipantCampaign from "../Components/TopParticipantCampaign";
 
 const Home = () => {
@@ -6,6 +7,8 @@ const Home = () => {
     <div className="">
       <Banner></Banner>
       <TopParticipantCampaign></TopParticipantCampaign>
+
+      <Feedback></Feedback>
     </div>
   );
 };

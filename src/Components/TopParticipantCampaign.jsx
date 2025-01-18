@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import CampCard from "./CampCard";
 import LoadingSpinner from "./LoadingSpinner";
+import { Link } from "react-router-dom";
+import SectionTitle from "./SectionTitle";
 
 const TopParticipantCampaign = () => {
   const axiosPublic = useAxiosPublic();
@@ -20,14 +22,20 @@ const TopParticipantCampaign = () => {
   if (isLoading) return <LoadingSpinner />;
   return (
     <div>
-      <h1 className="font-bold text-4xl text-center py-5 uppercase">
-        top participant people here
-      </h1>
+      <SectionTitle
+        heading="top of participant contributer"
+        subHeading="Compellingly whiteboard enterprise leadership skills and client-centric imperatives. Seamlessly aggregate cooperative e-business via wireless intellectual."
+      ></SectionTitle>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6  px-6 md:px-12 my-12">
         {topParticipantCampaigns?.map((camp) => (
           <CampCard key={camp._id} camp={camp}></CampCard>
         ))}
       </div>
+      <Link to="/available-camps">
+        <button className="px-4 text-white py-3 bg-green-500 hover:bg-green-600 rounded-lg block mx-auto my-8">
+          See Campaigns
+        </button>
+      </Link>
     </div>
   );
 };

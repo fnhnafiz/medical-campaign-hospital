@@ -1,5 +1,5 @@
 import { FaCheck } from "react-icons/fa";
-import LoadingSpinner from "../../Components/LoadingSpinner";
+// import LoadingSpinner from "../../Components/LoadingSpinner";
 import { MdPending } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import toast from "react-hot-toast";
@@ -8,26 +8,27 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import InputSearch from "../../Components/InputSearch";
 import { useState } from "react";
+import SectionTitle from "../../Components/SectionTitle";
+// import LoadingSpinner from "../../Components/LoadingSpinner";
 
 const ManageRegisterCamp = () => {
   const axiosSecure = useAxiosSecure();
   const [searchText, setSearchText] = useState();
-  const [registerCampaign, isLoading, refetch] = useRegister(searchText);
+  const [registerCampaign, refetch] = useRegister(searchText);
 
   // Handle confirmation status change
   const handleConfirmation = async (id, updateStatus) => {
     // Add your confirmation logic here
     console.log("Confirm registration:", id, updateStatus);
-    const res = await axiosSecure.patch(
-      `/register-campaign/${id}`,
-
-      {
-        confirmationStatus: updateStatus,
-      }
-    );
+    const res = await axiosSecure.patch(`/register-campaign/${id}`, {
+      confirmationStatus: updateStatus,
+    });
     // console.log("I confirmation status ", res.data);
     if (res.data.modifiedCount > 0) {
       toast.success("Confirm Successfully!!");
+      await axiosSecure.patch(`/update-payment-history/${id}`, {
+        confirmationStatus: updateStatus,
+      });
       refetch();
     }
   };
@@ -75,12 +76,16 @@ const ManageRegisterCamp = () => {
   };
 
   // console.log(registerCampaign);
-  // if (isLoading) return <LoadingSpinner />;
+  // if (isPending) return <LoadingSpinner />;
   return (
     <div className="w-full overflow-x-auto bg-white rounded-lg shadow">
+      <SectionTitle
+        heading="Here is All Join Campaign Information"
+        subHeading="Compellingly whiteboard enterprise leadership skills and client-centric imperatives. Seamlessly aggregate cooperative e-business via wireless intellectual."
+      ></SectionTitle>
       <InputSearch onSearch={setSearchText} />
       <table className="w-full">
-        <thead className="bg-gray-800 text-white">
+        <thead className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
           <tr>
             <th className="px-6 py-3 text-left text-sm font-semibold">
               Participant Name

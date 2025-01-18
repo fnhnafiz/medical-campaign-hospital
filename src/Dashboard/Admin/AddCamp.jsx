@@ -3,6 +3,7 @@ import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import SectionTitle from "../../Components/SectionTitle";
 
 const image_hosting_key = import.meta.env.VITE_IMGBB_API_KEY;
 
@@ -56,10 +57,13 @@ const AddCamp = () => {
   };
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">Add New Med Camp</h2>
+      <SectionTitle
+        heading="Add new campaign"
+        subHeading="Compellingly whiteboard enterprise leadership skills and client-centric imperatives. Seamlessly aggregate cooperative e-business via wireless intellectual."
+      ></SectionTitle>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-12"
       >
         <div>
           <label htmlFor="campName" className="block text-sm font-medium mb-1">

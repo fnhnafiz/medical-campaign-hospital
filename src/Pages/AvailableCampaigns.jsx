@@ -5,6 +5,8 @@ import useAxiosPublic from "../Hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import { LayoutGrid, List } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import SectionTitle from "../Components/SectionTitle";
+import { Link } from "react-router-dom";
 
 const AvailableCampaigns = () => {
   const axiosPublic = useAxiosPublic();
@@ -43,11 +45,12 @@ const AvailableCampaigns = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <div className="px-6">
+      <div className="px-6 pt-12">
         {/* Header Section */}
-        <h1 className="text-5xl font-bold text-center pt-20 mb-12">
-          Available Campaigns
-        </h1>
+        <SectionTitle
+          heading="See the valuable campaigns for med camps"
+          subHeading="Compellingly whiteboard enterprise leadership skills and client-centric imperatives. Seamlessly aggregate cooperative e-business via wireless intellectual."
+        ></SectionTitle>
 
         {/* Search and Controls Section */}
         <div className="flex flex-col md:flex-row gap-4 mb-8">

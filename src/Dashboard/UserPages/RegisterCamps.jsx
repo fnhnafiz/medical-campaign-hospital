@@ -2,14 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
 import LoadingSpinner from "../../Components/LoadingSpinner";
-import { CreditCard, X } from "lucide-react";
+import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import PaymentModal from "./PaymentModal";
+import InputSearch from "../../Components/InputSearch";
+import SectionTitle from "../../Components/SectionTitle";
 
 const RegisterCamps = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const [campaign, setCampaign] = useState({});
 
   const { user } = useAuth();
   console.log(user);
@@ -52,7 +56,7 @@ const RegisterCamps = () => {
     const res = await axiosSecure.post("/feedbacks", feedback);
     console.log(res.data);
     if (res.data.insertedId) {
-      toast.success("Thanks for your feeback");
+      toast.success("Thanks for your feedback");
       refetch();
       // closeModal()
       handleCloseModal();
@@ -60,9 +64,10 @@ const RegisterCamps = () => {
   };
 
   // Handle payment click
-  const handlePayment = (id) => {
-    // Add your payment logic here
-    console.log("Payment for ID:", id);
+  const handlePayment = (camp) => {
+    // Add payment logic here
+    setCampaign(camp);
+    // console.log("Payment for ID:", id);
     // handlePaymentMutation(id, paymentStatus);
     setIsModalOpen(true);
   };
@@ -72,16 +77,15 @@ const RegisterCamps = () => {
     setIsFeedbackModalOpen(false);
   };
 
-  const handlePaymentSubmit = (e) => {
-    e.preventDefault();
-    // Add your payment processing logic here
-    handleCloseModal();
-  };
-
   // console.log(registerCamps);
   if (isLoading) return <LoadingSpinner></LoadingSpinner>;
   return (
     <div className="w-full overflow-x-auto shadow-md rounded-lg">
+      <SectionTitle
+        heading="Join Campaign Details"
+        subHeading="Compellingly whiteboard enterprise leadership skills and client-centric imperatives. Seamlessly aggregate cooperative e-business via wireless intellectual."
+      ></SectionTitle>
+      <InputSearch />
       <table className="w-full text-sm text-left">
         <thead className="text-white uppercase bg-blue-600">
           <tr>
@@ -117,7 +121,7 @@ const RegisterCamps = () => {
               <td className="px-4 py-3">
                 {camp.paymentStatus === "unpaid" ? (
                   <button
-                    onClick={() => handlePayment(camp._id)}
+                    onClick={() => handlePayment(camp)}
                     className="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
                   >
                     Pay Now
@@ -168,110 +172,17 @@ const RegisterCamps = () => {
                   "N/A"
                 )}
               </td>
+              <PaymentModal
+                refetch={refetch}
+                campaign={campaign}
+                isModalOpen={isModalOpen}
+                handleCloseModal={handleCloseModal}
+              ></PaymentModal>
             </tr>
           ))}
         </tbody>
       </table>
-      {/* Payment Modal */}
-      {isModalOpen && (
-        <>
-          {/* Modal Backdrop */}
-          <div
-            className="fixed inset-0 bg-black bg-opacity-70 z-40"
-            onClick={handleCloseModal}
-          />
 
-          {/* Modal Content */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-              {/* Modal Header */}
-              <div className="flex items-center justify-between p-4 border-b">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Payment Details
-                </h3>
-                <button
-                  onClick={handleCloseModal}
-                  className="text-gray-400 hover:text-gray-500 focus:outline-none"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Modal Body */}
-              <form onSubmit={handlePaymentSubmit} className="p-4 space-y-4">
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Card Number
-                  </label>
-                  <div className="relative">
-                    <input
-                      required
-                      type="text"
-                      placeholder="1234 5678 9012 3456"
-                      className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                    <CreditCard className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Expiry Date
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="MM/YY"
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                      CVC
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="123"
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Name on Card
-                  </label>
-                  <input
-                    required
-                    type="text"
-                    placeholder="John Doe"
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-
-                {/* Modal Footer */}
-                <div className="flex justify-end space-x-3 pt-4">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    Pay Now
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </>
-      )}
       {isFeedbackModalOpen && (
         <>
           {/* Modal Backdrop */}
