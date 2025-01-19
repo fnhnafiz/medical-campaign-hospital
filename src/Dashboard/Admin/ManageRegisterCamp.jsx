@@ -15,7 +15,7 @@ import Pagination from "../../Components/Pagination";
 const ManageRegisterCamp = () => {
   const axiosSecure = useAxiosSecure();
   const [searchText, setSearchText] = useState();
-  const [registerCampaign, refetch] = useRegister(searchText);
+  const [registerCampaign, , refetch] = useRegister(searchText);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
@@ -24,7 +24,7 @@ const ManageRegisterCamp = () => {
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPosts = registerCampaign.slice(firstPostIndex, lastPostIndex);
 
-  console.log("I am current post", currentPosts);
+  // console.log("I am current post", currentPosts);
 
   // Handle confirmation status change
   const handleConfirmation = async (id, updateStatus) => {
@@ -35,6 +35,7 @@ const ManageRegisterCamp = () => {
     });
     // console.log("I confirmation status ", res.data);
     if (res.data.modifiedCount > 0) {
+      // console.log("I am updated status", res.data);
       toast.success("Confirm Successfully!!");
       await axiosSecure.patch(`/update-payment-history/${id}`, {
         confirmationStatus: updateStatus,

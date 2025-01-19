@@ -8,7 +8,7 @@ const Pagination = ({
   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
     pages.push(i);
   }
-  console.log("I am pages", pages);
+  // console.log("I am pages", pages);
 
   const handlePageClick = (pageNumber) => {
     setCurrentPage(pageNumber);

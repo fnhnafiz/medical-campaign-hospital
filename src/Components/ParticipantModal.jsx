@@ -4,9 +4,11 @@ import useAuth from "../Hooks/useAuth";
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import toast from "react-hot-toast";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
 
 const ParticipantModal = ({ isOpen, closeModal, campDetails, refetch }) => {
   const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const { _id, campFees, campName, healthcareProfessional, location } =
     campDetails;
@@ -15,7 +17,7 @@ const ParticipantModal = ({ isOpen, closeModal, campDetails, refetch }) => {
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
+    // console.log(data);
     const joinCamp = {
       joinCampId: _id,
       campName: data.campName,
@@ -41,7 +43,8 @@ const ParticipantModal = ({ isOpen, closeModal, campDetails, refetch }) => {
       toast.success("Join with campaign");
       closeModal();
       reset();
-      await axiosPublic.patch(`/participant-count/${_id}`).then((res) => {
+      await axiosSecure.patch(`/participant-count/${_id}`).then((res) => {
+        console.log("I am count", res.data);
         if (res.data.modifiedCount > 0) {
           refetch();
         }
