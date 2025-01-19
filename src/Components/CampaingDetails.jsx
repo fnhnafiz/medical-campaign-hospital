@@ -4,8 +4,9 @@ import {
   FaUserMd,
   FaCalendarAlt,
   FaUsers,
+  FaArrowLeft,
 } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import useAxiosPublic from "../Hooks/useAxiosPublic";
 import LoadingSpinner from "./LoadingSpinner";
 import ParticipantModal from "./ParticipantModal";
@@ -102,7 +103,7 @@ const CampaingDetails = () => {
               </p>
 
               {/* Join Button */}
-              <div className="text-center lg:text-left">
+              <div className="text-center flex justify-between items-center lg:text-left">
                 <button
                   disabled={isAdmin && user}
                   onClick={() => {
@@ -111,11 +112,17 @@ const CampaingDetails = () => {
                   className={`${
                     isAdmin && user
                       ? "bg-gray-500"
-                      : "bg-green-600 hover:bg-green-700"
-                  } text-white px-6 py-3 rounded-lg font-medium shadow-md transition`}
+                      : "bg-gradient-to-r from-emerald-500 to-teal-500 hover:shadow-lg hover:shadow-emerald-300"
+                  } text-white px-6 py-3 rounded-lg font-medium transition-all duration-200`}
                 >
                   Join Camp
                 </button>
+                <Link to="/">
+                  <button className=" flex items-center gap-2 px-4 py-2 text-gray-700 border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:shadow-lg hover:shadow-gray-200 transition-all duration-200">
+                    <FaArrowLeft className="text-lg" />
+                    Back to Home
+                  </button>
+                </Link>
                 <ParticipantModal
                   refetch={refetch}
                   campDetails={campDetails}

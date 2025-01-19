@@ -4,8 +4,10 @@ import {
   FaHeartbeat,
   FaUserCircle,
 } from "react-icons/fa";
+import useAuth from "../../Hooks/useAuth";
 
 const UserHome = () => {
+  const { user } = useAuth();
   const appointments = [
     { id: 1, date: "2025-01-20", time: "10:00 AM", doctor: "Dr. John Doe" },
     { id: 2, date: "2025-01-22", time: "2:00 PM", doctor: "Dr. Sarah Lee" },
@@ -28,7 +30,7 @@ const UserHome = () => {
         <h1 className="text-2xl font-bold">MedCamp Dashboard</h1>
         <div className="flex items-center">
           <FaUserCircle className="text-3xl mr-2" />
-          <span>Welcome, John Doe</span>
+          <span>Welcome, {user?.displayName}</span>
         </div>
       </header>
 

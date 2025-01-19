@@ -32,8 +32,8 @@ const TopParticipantCampaign = () => {
         ))}
       </div>
       <Link to="/available-camps">
-        <button className="px-4 text-white py-3 bg-green-500 hover:bg-green-600 rounded-lg block mx-auto my-8">
-          See Campaigns
+        <button className="uppercase px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-lg hover:shadow-lg hover:shadow-emerald-300 transition-all duration-200 block mx-auto my-8">
+          See more Campaigns
         </button>
       </Link>
     </div>

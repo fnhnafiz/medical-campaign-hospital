@@ -3,6 +3,8 @@ import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import SectionTitle from "../../Components/SectionTitle";
+import { useState } from "react";
+import Pagination from "../../Components/Pagination";
 
 const PaymentHistory = () => {
   const { user } = useAuth();
@@ -15,6 +17,12 @@ const PaymentHistory = () => {
       return res.data;
     },
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(5);
+
+  const lastPostIndex = currentPage * postsPerPage;
+  const firstPostIndex = lastPostIndex - postsPerPage;
+  const currentPosts = paymentHistory?.slice(firstPostIndex, lastPostIndex);
 
   return (
     <div className="overflow-x-auto">
@@ -23,7 +31,7 @@ const PaymentHistory = () => {
         subHeading="Compellingly whiteboard enterprise leadership skills and client-centric imperatives. Seamlessly aggregate cooperative e-business via wireless intellectual."
       ></SectionTitle>
       <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-        <thead className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+        <thead className="bg-gradient-to-r from-green-600 to-green-800 text-white">
           <tr className="border-b ">
             <th className="px-6 py-3 text-left text-sm font-medium ">
               Campaign Name
@@ -43,7 +51,7 @@ const PaymentHistory = () => {
           </tr>
         </thead>
         <tbody>
-          {paymentHistory?.map((payment) => (
+          {currentPosts?.map((payment) => (
             <tr key={payment._id} className="border-b hover:bg-gray-50">
               <td className="px-6 py-4 text-sm text-gray-900">
                 {payment.campName}
@@ -72,6 +80,12 @@ const PaymentHistory = () => {
           ))}
         </tbody>
       </table>
+      <Pagination
+        totalPosts={paymentHistory?.length}
+        postsPerPage={postsPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      ></Pagination>
     </div>
   );
 };

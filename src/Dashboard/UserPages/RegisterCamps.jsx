@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
-import LoadingSpinner from "../../Components/LoadingSpinner";
+
 import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -9,26 +9,32 @@ import { useState } from "react";
 import PaymentModal from "./PaymentModal";
 import InputSearch from "../../Components/InputSearch";
 import SectionTitle from "../../Components/SectionTitle";
+import Pagination from "../../Components/Pagination";
 
 const RegisterCamps = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [campaign, setCampaign] = useState({});
+  const [searchText, setSearchText] = useState("");
 
   const { user } = useAuth();
-  console.log(user);
+  // console.log(user);
   const axiosSecure = useAxiosSecure();
-  const {
-    data: registerCamps = [],
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["camps", user?.email],
+  const { data: registerCamps = [], refetch } = useQuery({
+    queryKey: ["camps", user?.email, searchText],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/register-campaign/${user?.email}`);
+      const res = await axiosSecure.get(
+        `/register-campaign/${user?.email}?search=${searchText}`
+      );
       return res.data;
     },
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(5);
+
+  const lastPostIndex = currentPage * postsPerPage;
+  const firstPostIndex = lastPostIndex - postsPerPage;
+  const currentPosts = registerCamps?.slice(firstPostIndex, lastPostIndex);
 
   // Handle cancel click
   const handleCancel = async (id) => {
@@ -78,47 +84,68 @@ const RegisterCamps = () => {
   };
 
   // console.log(registerCamps);
-  if (isLoading) return <LoadingSpinner></LoadingSpinner>;
+  // if (isLoading) return <LoadingSpinner></LoadingSpinner>;
   return (
     <div className="w-full overflow-x-auto shadow-md rounded-lg">
       <SectionTitle
         heading="Join Campaign Details"
         subHeading="Compellingly whiteboard enterprise leadership skills and client-centric imperatives. Seamlessly aggregate cooperative e-business via wireless intellectual."
       ></SectionTitle>
-      <InputSearch />
+      <InputSearch onSearch={setSearchText} />
       <table className="w-full text-sm text-left">
-        <thead className="text-white uppercase bg-blue-600">
+        <thead className="text-white uppercase bg-gray-600">
           <tr>
-            <th scope="col" className="px-4 py-3 border-r border-red-500">
+            <th
+              scope="col"
+              className="px-4 py-3 border-r border-l border-green-500"
+            >
               Camp Name
             </th>
-            <th scope="col" className="px-4 py-3 border-r border-red-500">
+            <th
+              scope="col"
+              className="px-4 py-3 border-r border-l border-green-500"
+            >
               Camp Fees
             </th>
-            <th scope="col" className="px-4 py-3 border-r border-red-500">
+            <th
+              scope="col"
+              className="px-4 py-3 border-r border-l border-green-500"
+            >
               Participant Name
             </th>
-            <th scope="col" className="px-4 py-3 border-r border-red-500">
+            <th
+              scope="col"
+              className="px-4 py-3 border-r border-l border-green-500"
+            >
               Payment Status
             </th>
-            <th scope="col" className="px-4 py-3 border-r border-red-500">
+            <th
+              scope="col"
+              className="px-4 py-3 border-r border-l border-green-500"
+            >
               Confirmation Status
             </th>
-            <th scope="col" className="px-4 py-3 border-r border-red-500">
+            <th
+              scope="col"
+              className="px-4 py-3 border-r border-l border-green-500"
+            >
               Actions
             </th>
-            <th scope="col" className="px-4 py-3 border-r border-red-500">
+            <th
+              scope="col"
+              className="px-4 py-3 border-r border-l border-green-500"
+            >
               Feedback
             </th>
           </tr>
         </thead>
         <tbody>
-          {registerCamps?.map((camp) => (
+          {currentPosts?.map((camp) => (
             <tr key={camp._id} className="bg-white border-b hover:bg-gray-50">
-              <td className="px-4 py-3">{camp.campName}</td>
-              <td className="px-4 py-3">${camp.campFees}</td>
-              <td className="px-4 py-3">{camp.participantName}</td>
-              <td className="px-4 py-3">
+              <td className="px-4 py-3 ">{camp.campName}</td>
+              <td className="px-4 py-3 text-right">${camp.campFees}</td>
+              <td className="px-4 py-3 text-center">{camp.participantName}</td>
+              <td className="px-4 py-3 text-center">
                 {camp.paymentStatus === "unpaid" ? (
                   <button
                     onClick={() => handlePayment(camp)}
@@ -132,7 +159,7 @@ const RegisterCamps = () => {
                   </span>
                 )}
               </td>
-              <td className="px-4 py-3">
+              <td className="px-4 py-3 text-center">
                 <span
                   className={`px-3 py-1 text-sm font-medium rounded-full ${
                     camp.confirmationStatus === "confirmed"
@@ -145,7 +172,7 @@ const RegisterCamps = () => {
                     : "Pending"}
                 </span>
               </td>
-              <td className="px-4 py-3 space-x-2">
+              <td className="px-4 py-3 space-x-2 text-center">
                 <button
                   onClick={() => handleCancel(camp._id)}
                   disabled={camp.paymentStatus === "paid"}
@@ -182,6 +209,12 @@ const RegisterCamps = () => {
           ))}
         </tbody>
       </table>
+      <Pagination
+        totalPosts={registerCamps.length}
+        postsPerPage={postsPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      ></Pagination>
 
       {isFeedbackModalOpen && (
         <>

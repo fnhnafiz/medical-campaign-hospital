@@ -1,6 +1,8 @@
 import { FaBell, FaClipboardList, FaUserMd, FaUsers } from "react-icons/fa";
+import useAuth from "../../Hooks/useAuth";
 
 const AdminHome = () => {
+  const { user } = useAuth();
   const stats = [
     { id: 1, title: "Total Patients", value: 1245, icon: FaUsers },
     { id: 2, title: "Appointments Today", value: 27, icon: FaClipboardList },
@@ -32,11 +34,11 @@ const AdminHome = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       {/* Header */}
-      <header className="flex items-center justify-between bg-blue-600 text-white p-4 rounded-md shadow-md">
+      <header className="flex items-center justify-between bg-gray-600 text-white p-4 rounded-md shadow-md">
         <h1 className="text-2xl font-bold">MedCamp Admin Dashboard</h1>
         <div className="flex items-center">
           <FaUserMd className="text-3xl mr-2" />
-          <span>Welcome, Admin</span>
+          <span>Welcome,{user?.displayName && user?.displayName} Admin</span>
         </div>
       </header>
 

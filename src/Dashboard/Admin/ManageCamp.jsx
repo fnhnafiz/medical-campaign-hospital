@@ -12,13 +12,20 @@ import Swal from "sweetalert2";
 import InputSearch from "../../Components/InputSearch";
 import SectionTitle from "../../Components/SectionTitle";
 import { useState } from "react";
+import Pagination from "../../Components/Pagination";
 
 const ManageCamp = () => {
   const [searchText, setSearchText] = useState("");
   const [campaign, , refetch] = useCampaings({ searchText });
-  console.log(searchText);
+  // console.log(searchText);
   // console.log(campaign);
   const axiosSecure = useAxiosSecure();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(5);
+
+  const lastPostIndex = currentPage * postsPerPage;
+  const firstPostIndex = lastPostIndex - postsPerPage;
+  const currentPosts = campaign.slice(firstPostIndex, lastPostIndex);
 
   const handleCampaignDelete = async (id) => {
     Swal.fire({
@@ -52,7 +59,7 @@ const ManageCamp = () => {
       ></SectionTitle>
       <InputSearch onSearch={setSearchText} />
       <table className="w-full">
-        <thead className="bg-gradient-to-r from-blue-600 to-blue-800">
+        <thead className="bg-gradient-to-r from-gray-600 to-gray-800">
           <tr>
             <th className="px-6 py-4 text-left text-sm font-semibold text-white">
               Camp Name
@@ -72,7 +79,7 @@ const ManageCamp = () => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {campaign?.map((camp) => (
+          {currentPosts?.map((camp) => (
             <tr
               key={camp._id}
               className="hover:bg-blue-50 transition-colors duration-200"
@@ -84,7 +91,7 @@ const ManageCamp = () => {
               </td>
               <td className="px-6 py-4">
                 <div className="flex items-center gap-2 text-gray-600">
-                  <FaClock className="text-blue-500" />
+                  <FaClock className="text-red-500" />
                   <div className="flex flex-col">
                     <span>{new Date(camp?.dateTime).toLocaleDateString()}</span>
                     <span className="text-sm text-gray-500">
@@ -109,7 +116,7 @@ const ManageCamp = () => {
                 <div className="flex items-center gap-4">
                   <Link
                     to={`/dashboard/update-camp/${camp._id}`}
-                    className="p-2 text-blue-600 hover:bg-blue-100 rounded-full transition-colors duration-200"
+                    className="p-2 text-green-600 hover:bg-green-100 rounded-full transition-colors duration-200"
                   >
                     <button className="flex items-center gap-2 font-medium">
                       <FaEdit className="text-lg" />
@@ -129,6 +136,12 @@ const ManageCamp = () => {
           ))}
         </tbody>
       </table>
+      <Pagination
+        totalPosts={campaign.length}
+        postsPerPage={postsPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      ></Pagination>
     </div>
   );
 };

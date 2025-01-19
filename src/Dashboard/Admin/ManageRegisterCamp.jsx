@@ -9,12 +9,22 @@ import Swal from "sweetalert2";
 import InputSearch from "../../Components/InputSearch";
 import { useState } from "react";
 import SectionTitle from "../../Components/SectionTitle";
+import Pagination from "../../Components/Pagination";
 // import LoadingSpinner from "../../Components/LoadingSpinner";
 
 const ManageRegisterCamp = () => {
   const axiosSecure = useAxiosSecure();
   const [searchText, setSearchText] = useState();
   const [registerCampaign, refetch] = useRegister(searchText);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(5);
+
+  const lastPostIndex = currentPage * postsPerPage;
+  const firstPostIndex = lastPostIndex - postsPerPage;
+  const currentPosts = registerCampaign.slice(firstPostIndex, lastPostIndex);
+
+  console.log("I am current post", currentPosts);
 
   // Handle confirmation status change
   const handleConfirmation = async (id, updateStatus) => {
@@ -84,8 +94,8 @@ const ManageRegisterCamp = () => {
         subHeading="Compellingly whiteboard enterprise leadership skills and client-centric imperatives. Seamlessly aggregate cooperative e-business via wireless intellectual."
       ></SectionTitle>
       <InputSearch onSearch={setSearchText} />
-      <table className="w-full">
-        <thead className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+      <table className="w-full ">
+        <thead className="bg-gradient-to-r from-gray-600 to-gray-800 text-white">
           <tr>
             <th className="px-6 py-3 text-left text-sm font-semibold">
               Participant Name
@@ -108,7 +118,7 @@ const ManageRegisterCamp = () => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {registerCampaign.map((registration) => (
+          {currentPosts.map((registration) => (
             <tr key={registration._id} className="hover:bg-gray-50">
               <td className="px-6 py-4 text-sm text-gray-900">
                 {registration.participantName}
@@ -140,22 +150,7 @@ const ManageRegisterCamp = () => {
                   )}
                 </span>
               </td>
-              {/* <td className="px-6 py-4 text-sm">
-                {registration.confirmationStatus === "pending" ? (
-                  <button
-                    onClick={() => handleConfirmation(registration._id)}
-                    className="px-3 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded-full hover:bg-blue-200 flex items-center gap-1"
-                  >
-                    <MdPending className="text-blue-600" />
-                    Pending
-                  </button>
-                ) : (
-                  <span className="px-3 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full flex items-center gap-1 w-fit">
-                    <FaCheck className="text-green-600" />
-                    Confirmed
-                  </span>
-                )}
-              </td> */}
+
               <td
                 className={`px-4 py-3 border-x border-gray-200 ${
                   registration?.confirmationStatus === "confirmed"
@@ -213,6 +208,12 @@ const ManageRegisterCamp = () => {
           ))}
         </tbody>
       </table>
+      <Pagination
+        totalPosts={registerCampaign.length}
+        postsPerPage={postsPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      ></Pagination>
     </div>
   );
 };

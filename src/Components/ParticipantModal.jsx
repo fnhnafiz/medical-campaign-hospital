@@ -51,7 +51,7 @@ const ParticipantModal = ({ isOpen, closeModal, campDetails, refetch }) => {
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={closeModal}>
+      <Dialog as="div" className="relative z-10 mt-5" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -237,17 +237,17 @@ const ParticipantModal = ({ isOpen, closeModal, campDetails, refetch }) => {
                     </div>
 
                     {/* Buttons */}
-                    <div className="mt-6 flex justify-end space-x-4">
+                    <div className="flex justify-between space-x-4 mt-6">
                       <button
                         type="button"
-                        className="px-4 py-2 bg-gray-300 rounded-md text-gray-700 hover:bg-gray-400"
+                        className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 hover:shadow-lg hover:shadow-gray-200 transition-all duration-200"
                         onClick={closeModal}
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
-                        className="px-4 py-2 bg-green-600 rounded-md text-white hover:bg-green-700"
+                        className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-lg hover:shadow-lg hover:shadow-emerald-300 transition-all duration-200"
                       >
                         Submit
                       </button>

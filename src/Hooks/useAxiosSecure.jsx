@@ -3,6 +3,7 @@ import useAuth from "./useAuth";
 import { useNavigate } from "react-router-dom";
 
 const axiosSecure = axios.create({
+  // baseURL: "https://medical-camp-management-system-backend-side.vercel.app",
   baseURL: "http://localhost:5000",
 });
 
@@ -10,7 +11,7 @@ const useAxiosSecure = () => {
   const { logOut } = useAuth();
   const navigate = useNavigate();
   // request interceptor to add authorization for header and call to the every secure route apis
-  axiosSecure?.interceptors?.request?.use(
+  axiosSecure.interceptors.request.use(
     function (config) {
       const token = localStorage.getItem("token");
       config.headers.authorization = `Bearer ${token}`;
@@ -23,7 +24,7 @@ const useAxiosSecure = () => {
   );
 
   //response interceptos
-  axiosSecure.interceptors?.response?.use(
+  axiosSecure.interceptors.response.use(
     function (response) {
       return response;
     },
