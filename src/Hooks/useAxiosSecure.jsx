@@ -10,7 +10,7 @@ const axiosSecure = axios.create({
 const useAxiosSecure = () => {
   const { logOut } = useAuth();
   const navigate = useNavigate();
-  // request interceptor to add authorization for header and call to the every secure route apis
+  // request interceptor to add authorization for header & call to the every secure route apis
   axiosSecure.interceptors.request.use(
     function (config) {
       const token = localStorage.getItem("token");
