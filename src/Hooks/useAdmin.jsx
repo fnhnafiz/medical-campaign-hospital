@@ -14,7 +14,6 @@ const useAdmin = () => {
       return data?.admin;
     },
   });
-  // console.log("I am from useAdmin", organizer);
   return [organizer, isAdminLoading];
 };
 
