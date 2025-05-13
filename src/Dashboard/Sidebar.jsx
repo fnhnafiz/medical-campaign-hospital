@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useAuth from "../Hooks/useAuth";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { RiHome6Line, RiMenuFoldLine, RiMenuUnfoldLine } from "react-icons/ri";
 import {
   MdOutlineManageAccounts,
@@ -18,6 +18,7 @@ import useAdmin from "../Hooks/useAdmin";
 
 const Sidebar = () => {
   const { logOut } = useAuth();
+  const navigate = useNavigate();
   const [isActive, setActive] = useState(false);
   // const isAdmin = true;
   const [organizer] = useAdmin();
@@ -25,6 +26,11 @@ const Sidebar = () => {
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive);
+  };
+  const handleLogOut = () => {
+    logOut().then(() => {
+      navigate("/");
+    });
   };
 
   return (
@@ -51,7 +57,7 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`z-10 md:fixed flex flex-col justify-between overflow-x-hidden bg-gradient-to-b from-emerald-50 to-teal-50 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${
+        className={`z-20 md:fixed flex flex-col justify-between overflow-x-hidden bg-gradient-to-b from-emerald-50 to-teal-50 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${
           isActive && "-translate-x-full"
         } md:translate-x-0 transition duration-200 ease-in-out`}
       >
@@ -164,7 +170,7 @@ const Sidebar = () => {
         <div className="px-2">
           <hr className="border-emerald-200" />
           <button
-            onClick={logOut}
+            onClick={handleLogOut}
             className="flex w-full items-center space-x-2 px-4 py-3 mt-4 text-gray-700 hover:bg-rose-100 hover:text-rose-600 rounded-lg transition-colors duration-200"
           >
             <IoLogOutOutline className="w-5 h-5" />

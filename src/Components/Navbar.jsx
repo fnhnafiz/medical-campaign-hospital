@@ -35,7 +35,7 @@ const Navbar = () => {
 
   return (
     <div className="fixed w-full bg-gradient-to-r from-emerald-50 to-teal-50 z-20 shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
@@ -44,8 +44,8 @@ const Navbar = () => {
               alt="CampMed"
               className="w-10 h-10 md:w-12 md:h-12"
             />
-            <span className="text-xl md:text-2xl font-bold text-emerald-600">
-              Camp Med
+            <span className="text-xl md:text-2xl uppercase font-bold text-emerald-600">
+              Med Camp
             </span>
           </Link>
 

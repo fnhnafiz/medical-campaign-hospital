@@ -9,11 +9,13 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:shadow-lg hover:shadow-emerald-300 text-white py-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className=" px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           {/* Logo and About Section */}
           <div>
-            <h2 className="text-3xl font-semibold text-white">Med Camp</h2>
+            <h2 className="text-3xl font-semibold text-white uppercase">
+              Med Camp
+            </h2>
             <p className="mt-4 text-sm text-white">
               Join us in our mission to provide medical support where it's
               needed most. Our campaigns bring health to communities in need.

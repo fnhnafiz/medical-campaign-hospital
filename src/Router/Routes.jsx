@@ -19,11 +19,13 @@ import RegisterCamps from "../Dashboard/UserPages/RegisterCamps";
 import PaymentHistory from "../Dashboard/UserPages/PaymentHistory";
 import UpdatedCampaign from "../Dashboard/AdminPages/UpdatedCampaign";
 import CampaingDetails from "../Components/CampaingDetails";
+import ErrorPage from "../Components/ErrorPage";
 
 const Routes = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",

@@ -37,14 +37,14 @@ const FeedbackCard = ({ feedback }) => {
         {/* Toggle Read More/Read Less */}
         <button
           onClick={toggleDescription}
-          className="text-sm text-blue-500 mt-2"
+          className="text-sm text-green-500 mt-2"
         >
           {isExpanded ? "Read Less" : "Read More"}
         </button>
 
         {/* Rating */}
         <div className="flex items-center mt-4">
-          <span className="text-yellow-500 text-xl">{rating}/10</span>
+          <span className="text-yellow-500 text-xl">{rating}/5</span>
         </div>
       </div>
     </div>
