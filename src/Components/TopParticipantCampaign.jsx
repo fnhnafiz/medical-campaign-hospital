@@ -26,7 +26,7 @@ const TopParticipantCampaign = () => {
         heading="top of participant contributer"
         subHeading="Compellingly whiteboard enterprise leadership skills and client-centric imperatives. Seamlessly aggregate cooperative e-business via wireless intellectual."
       ></SectionTitle>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6  px-6 md:px-12 my-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6  px-6 md:px-12 my-12">
         {topParticipantCampaigns?.map((camp) => (
           <CampCard key={camp._id} camp={camp}></CampCard>
         ))}

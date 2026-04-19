@@ -5,11 +5,11 @@ import SupportOurMission from "../Components/SupportOurMission";
 
 const MainLayout = () => {
   return (
-    <div>
+    <div className="">
       <header>
         <Navbar></Navbar>
       </header>
-      <main className="min-h-[calc(100vh-68px)] pt-5">
+      <main className="min-h-[calc(100vh-68px)] pt-5 container mx-auto">
         <Outlet></Outlet>
       </main>
       <section>

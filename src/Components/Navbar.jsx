@@ -34,103 +34,107 @@ const Navbar = () => {
   });
 
   return (
-    <div className="fixed w-full bg-gradient-to-r from-emerald-50 to-teal-50 z-20 shadow-md">
+    <div className="fixed w-full z-20 bg-white border-b border-emerald-100 shadow-sm">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex justify-between items-center h-16 md:h-20">
+        <div className="flex justify-between items-center h-16 md:h-[68px]">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <img
-              src={navLogo}
-              alt="CampMed"
-              className="w-10 h-10 md:w-12 md:h-12"
-            />
-            <span className="text-xl md:text-2xl uppercase font-bold text-emerald-600">
-              Med Camp
+          <Link to="/" className="flex items-center gap-2.5">
+            <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center">
+              <img
+                src={navLogo}
+                alt="CampMed"
+                className="w-6 h-6 object-contain"
+              />
+            </div>
+            <span className="text-[17px] font-bold text-emerald-600 tracking-widest uppercase">
+              Med<span className="font-normal text-emerald-400">Camp</span>
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center gap-1">
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
+                `flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-emerald-500 text-white"
-                    : "hover:bg-emerald-100 text-gray-700"
+                    ? "bg-emerald-600 text-white"
+                    : "text-gray-600 hover:bg-emerald-50 hover:text-emerald-700"
                 }`
               }
             >
               <FaRegHospital className="w-4 h-4" />
-              <span>Home</span>
+              Home
             </NavLink>
 
             <NavLink
               to="/available-camps"
               className={({ isActive }) =>
-                `flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
+                `flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-emerald-500 text-white"
-                    : "hover:bg-emerald-100 text-gray-700"
+                    ? "bg-emerald-600 text-white"
+                    : "text-gray-600 hover:bg-emerald-50 hover:text-emerald-700"
                 }`
               }
             >
               <TbCampfire className="w-4 h-4" />
-              <span>Available Camps</span>
+              Available Camps
             </NavLink>
+          </div>
 
-            {/* Notification Icon */}
+          {/* Right Side */}
+          <div className="hidden lg:flex items-center gap-3">
+            {/* Notification Bell */}
             {user && !organizer && (
               <div className="relative">
                 <button
                   onClick={() => setIsNotificationOpen(!isNotificationOpen)}
-                  className="p-2 hover:bg-emerald-100 rounded-full transition-colors relative"
+                  className="relative w-[38px] h-[38px] rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center hover:bg-emerald-100 transition-colors"
                 >
-                  <IoNotificationsOutline className="w-6 h-6 text-gray-700" />
+                  <IoNotificationsOutline className="w-[18px] h-[18px] text-emerald-600" />
                   {notifications?.length > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                      {notifications?.length}
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-semibold w-[18px] h-[18px] flex items-center justify-center rounded-full border-2 border-white">
+                      {notifications.length}
                     </span>
                   )}
                 </button>
 
-                {/* Notification Panel */}
                 {isNotificationOpen && (
                   <>
                     <div
                       className="fixed inset-0 bg-black/30"
                       onClick={() => setIsNotificationOpen(false)}
                     />
-                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl z-30">
-                      <div className="p-4 border-b flex items-center justify-between">
-                        <h3 className="font-semibold text-gray-900">
+                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl z-30 border border-emerald-100">
+                      <div className="p-4 border-b border-emerald-50 flex items-center justify-between">
+                        <h3 className="font-semibold text-gray-900 text-sm">
                           Notifications
                         </h3>
                         <button
                           onClick={() => setIsNotificationOpen(false)}
-                          className="text-gray-500 hover:text-gray-700"
+                          className="text-gray-400 hover:text-gray-600 w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-100"
                         >
-                          <IoClose className="w-5 h-5" />
+                          <IoClose className="w-4 h-4" />
                         </button>
                       </div>
                       <div className="max-h-[400px] overflow-y-auto">
                         {notifications.length === 0 ? (
-                          <div className="p-4 text-center text-gray-500">
+                          <div className="p-6 text-center text-gray-400 text-sm">
                             No new notifications
                           </div>
                         ) : (
                           notifications.map((notification, index) => (
                             <div
                               key={index}
-                              className="p-4 hover:bg-gray-50 border-b last:border-b-0"
+                              className="p-4 hover:bg-emerald-50/50 border-b border-gray-50 last:border-b-0 transition-colors"
                             >
-                              <p className="font-medium text-gray-900">
+                              <p className="font-medium text-gray-900 text-sm">
                                 {notification.name}
                               </p>
-                              <p className="text-sm text-gray-500 mt-1">
+                              <p className="text-xs text-gray-500 mt-0.5">
                                 {notification.message}
                               </p>
-                              <p className="text-xs text-gray-400 mt-1">
+                              <p className="text-[11px] text-gray-400 mt-1">
                                 2 minutes ago
                               </p>
                             </div>
@@ -143,143 +147,388 @@ const Navbar = () => {
               </div>
             )}
 
-            {/* User Menu */}
-            <div className="relative">
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center space-x-2 p-2 rounded-lg hover:bg-emerald-100 transition-colors"
-              >
-                <img
-                  referrerPolicy="no-referrer"
-                  src={user?.photoURL || avatarImg}
-                  alt="Profile"
-                  className="w-8 h-8 rounded-full border-2 border-emerald-200"
-                />
-                <RiMenu3Line className="w-5 h-5 text-gray-700" />
-              </button>
+            {/* User Avatar / Auth Buttons */}
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setIsOpen(!isOpen)}
+                  className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 transition-colors"
+                >
+                  <img
+                    referrerPolicy="no-referrer"
+                    src={user?.photoURL || avatarImg}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full object-cover border-2 border-white"
+                  />
+                  <RiMenu3Line className="w-4 h-4 text-emerald-600" />
+                </button>
 
-              {/* Dropdown Menu */}
-              {isOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl z-30">
-                  {user ? (
-                    <>
-                      <Link
-                        to={`/dashboard/${organizer ? "admin" : "user"}-home`}
-                        className="flex items-center space-x-2 px-4 py-3 hover:bg-emerald-50 transition-colors"
-                      >
-                        <MdDashboard className="w-5 h-5 text-emerald-600" />
-                        <span>Dashboard</span>
-                      </Link>
-                      <button
-                        onClick={logOut}
-                        className="flex items-center space-x-2 px-4 py-3 hover:bg-emerald-50 transition-colors w-full text-left text-rose-600"
-                      >
-                        <IoClose className="w-5 h-5" />
-                        <span>Logout</span>
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        to="/login"
-                        className="flex items-center space-x-2 px-4 py-3 hover:bg-emerald-50 transition-colors"
-                      >
-                        <MdLogin className="w-5 h-5 text-emerald-600" />
-                        <span>Login</span>
-                      </Link>
-                      <Link
-                        to="/register"
-                        className="flex items-center space-x-2 px-4 py-3 hover:bg-emerald-50 transition-colors"
-                      >
-                        <MdPersonAdd className="w-5 h-5 text-emerald-600" />
-                        <span>Sign Up</span>
-                      </Link>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
+                {isOpen && (
+                  <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-xl z-30 border border-emerald-100 overflow-hidden py-1">
+                    <Link
+                      to={`/dashboard/${organizer ? "admin" : "user"}-home`}
+                      className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-emerald-50 transition-colors text-sm text-gray-700"
+                    >
+                      <MdDashboard className="w-4 h-4 text-emerald-600" />
+                      Dashboard
+                    </Link>
+                    <div className="mx-3 my-1 h-px bg-gray-100" />
+                    <button
+                      onClick={logOut}
+                      className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-red-50 transition-colors w-full text-left text-sm text-red-500"
+                    >
+                      <IoClose className="w-4 h-4" />
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/login"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-emerald-600 border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 transition-colors"
+                >
+                  <MdLogin className="w-4 h-4" />
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors"
+                >
+                  <MdPersonAdd className="w-4 h-4" />
+                  Sign Up
+                </Link>
+              </div>
+            )}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Hamburger */}
           <div className="lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 hover:bg-emerald-100 rounded-lg transition-colors"
+              className="w-9 h-9 flex items-center justify-center rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 transition-colors"
             >
               {isOpen ? (
-                <IoClose className="w-6 h-6 text-gray-700" />
+                <IoClose className="w-5 h-5 text-emerald-600" />
               ) : (
-                <RiMenu3Line className="w-6 h-6 text-gray-700" />
+                <RiMenu3Line className="w-5 h-5 text-emerald-600" />
               )}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Dropdown */}
         {isOpen && (
-          <div className="lg:hidden border-t border-gray-200">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  `block px-3 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-emerald-500 text-white"
-                      : "hover:bg-emerald-100 text-gray-700"
-                  }`
-                }
-              >
-                Home
-              </NavLink>
-              <NavLink
-                to="/available-camps"
-                className={({ isActive }) =>
-                  `block px-3 py-2 rounded-lg ${
-                    isActive
-                      ? "bg-emerald-500 text-white"
-                      : "hover:bg-emerald-100 text-gray-700"
-                  }`
-                }
-              >
-                Available Camps
-              </NavLink>
-              {user ? (
-                <>
-                  <Link
-                    to={`/dashboard/${organizer ? "admin" : "user"}-home`}
-                    className="block px-3 py-2 rounded-lg hover:bg-emerald-100 text-gray-700"
-                  >
-                    Dashboard
-                  </Link>
+          <div className="lg:hidden border-t border-emerald-100 py-3 space-y-1">
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `block px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-emerald-600 text-white"
+                    : "text-gray-600 hover:bg-emerald-50 hover:text-emerald-700"
+                }`
+              }
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/available-camps"
+              className={({ isActive }) =>
+                `block px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-emerald-600 text-white"
+                    : "text-gray-600 hover:bg-emerald-50 hover:text-emerald-700"
+                }`
+              }
+            >
+              Available Camps
+            </NavLink>
+
+            {user ? (
+              <>
+                <Link
+                  to={`/dashboard/${organizer ? "admin" : "user"}-home`}
+                  className="block px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                >
+                  Dashboard
+                </Link>
+                <div className="pt-1 border-t border-emerald-100 mt-1">
                   <button
                     onClick={logOut}
-                    className="block w-full text-left px-3 py-2 rounded-lg hover:bg-rose-50 text-rose-600"
+                    className="block w-full text-left px-3.5 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"
                   >
                     Logout
                   </button>
-                </>
-              ) : (
-                <>
-                  <Link
-                    to="/login"
-                    className="block px-3 py-2 rounded-lg hover:bg-emerald-100 text-gray-700"
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="block px-3 py-2 rounded-lg hover:bg-emerald-100 text-gray-700"
-                  >
-                    Sign Up
-                  </Link>
-                </>
-              )}
-            </div>
+                </div>
+              </>
+            ) : (
+              <div className="pt-2 border-t border-emerald-100 mt-1 flex gap-2">
+                <Link
+                  to="/login"
+                  className="flex-1 text-center px-3 py-2.5 rounded-lg text-sm font-semibold text-emerald-600 border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 transition-colors"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="flex-1 text-center px-3 py-2.5 rounded-lg text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
           </div>
         )}
       </div>
     </div>
+    // <div className="fixed w-full bg-gradient-to-r from-emerald-50 to-teal-50 z-20 shadow-md">
+    //   <div className="container mx-auto px-4 sm:px-6">
+    //     <div className="flex justify-between items-center h-16 md:h-20">
+    //       {/* Logo */}
+    //       <Link to="/" className="flex items-center space-x-2">
+    //         <img
+    //           src={navLogo}
+    //           alt="CampMed"
+    //           className="w-10 h-10 md:w-12 md:h-12"
+    //         />
+    //         <span className="text-xl md:text-2xl uppercase font-bold text-emerald-600">
+    //           Med Camp
+    //         </span>
+    //       </Link>
+
+    //       {/* Desktop Navigation */}
+    //       <div className="hidden lg:flex items-center space-x-8">
+    //         <NavLink
+    //           to="/"
+    //           className={({ isActive }) =>
+    //             `flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
+    //               isActive
+    //                 ? "bg-emerald-500 text-white"
+    //                 : "hover:bg-emerald-100 text-gray-700"
+    //             }`
+    //           }
+    //         >
+    //           <FaRegHospital className="w-4 h-4" />
+    //           <span>Home</span>
+    //         </NavLink>
+
+    //         <NavLink
+    //           to="/available-camps"
+    //           className={({ isActive }) =>
+    //             `flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors ${
+    //               isActive
+    //                 ? "bg-emerald-500 text-white"
+    //                 : "hover:bg-emerald-100 text-gray-700"
+    //             }`
+    //           }
+    //         >
+    //           <TbCampfire className="w-4 h-4" />
+    //           <span>Available Camps</span>
+    //         </NavLink>
+
+    //         {/* Notification Icon */}
+    //         {user && !organizer && (
+    //           <div className="relative">
+    //             <button
+    //               onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+    //               className="p-2 hover:bg-emerald-100 rounded-full transition-colors relative"
+    //             >
+    //               <IoNotificationsOutline className="w-6 h-6 text-gray-700" />
+    //               {notifications?.length > 0 && (
+    //                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+    //                   {notifications?.length}
+    //                 </span>
+    //               )}
+    //             </button>
+
+    //             {/* Notification Panel */}
+    //             {isNotificationOpen && (
+    //               <>
+    //                 <div
+    //                   className="fixed inset-0 bg-black/30"
+    //                   onClick={() => setIsNotificationOpen(false)}
+    //                 />
+    //                 <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl z-30">
+    //                   <div className="p-4 border-b flex items-center justify-between">
+    //                     <h3 className="font-semibold text-gray-900">
+    //                       Notifications
+    //                     </h3>
+    //                     <button
+    //                       onClick={() => setIsNotificationOpen(false)}
+    //                       className="text-gray-500 hover:text-gray-700"
+    //                     >
+    //                       <IoClose className="w-5 h-5" />
+    //                     </button>
+    //                   </div>
+    //                   <div className="max-h-[400px] overflow-y-auto">
+    //                     {notifications.length === 0 ? (
+    //                       <div className="p-4 text-center text-gray-500">
+    //                         No new notifications
+    //                       </div>
+    //                     ) : (
+    //                       notifications.map((notification, index) => (
+    //                         <div
+    //                           key={index}
+    //                           className="p-4 hover:bg-gray-50 border-b last:border-b-0"
+    //                         >
+    //                           <p className="font-medium text-gray-900">
+    //                             {notification.name}
+    //                           </p>
+    //                           <p className="text-sm text-gray-500 mt-1">
+    //                             {notification.message}
+    //                           </p>
+    //                           <p className="text-xs text-gray-400 mt-1">
+    //                             2 minutes ago
+    //                           </p>
+    //                         </div>
+    //                       ))
+    //                     )}
+    //                   </div>
+    //                 </div>
+    //               </>
+    //             )}
+    //           </div>
+    //         )}
+
+    //         {/* User Menu */}
+    //         <div className="relative">
+    //           <button
+    //             onClick={() => setIsOpen(!isOpen)}
+    //             className="flex items-center space-x-2 p-2 rounded-lg hover:bg-emerald-100 transition-colors"
+    //           >
+    //             <img
+    //               referrerPolicy="no-referrer"
+    //               src={user?.photoURL || avatarImg}
+    //               alt="Profile"
+    //               className="w-8 h-8 rounded-full border-2 border-emerald-200"
+    //             />
+    //             <RiMenu3Line className="w-5 h-5 text-gray-700" />
+    //           </button>
+
+    //           {/* Dropdown Menu */}
+    //           {isOpen && (
+    //             <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl z-30">
+    //               {user ? (
+    //                 <>
+    //                   <Link
+    //                     to={`/dashboard/${organizer ? "admin" : "user"}-home`}
+    //                     className="flex items-center space-x-2 px-4 py-3 hover:bg-emerald-50 transition-colors"
+    //                   >
+    //                     <MdDashboard className="w-5 h-5 text-emerald-600" />
+    //                     <span>Dashboard</span>
+    //                   </Link>
+    //                   <button
+    //                     onClick={logOut}
+    //                     className="flex items-center space-x-2 px-4 py-3 hover:bg-emerald-50 transition-colors w-full text-left text-rose-600"
+    //                   >
+    //                     <IoClose className="w-5 h-5" />
+    //                     <span>Logout</span>
+    //                   </button>
+    //                 </>
+    //               ) : (
+    //                 <>
+    //                   <Link
+    //                     to="/login"
+    //                     className="flex items-center space-x-2 px-4 py-3 hover:bg-emerald-50 transition-colors"
+    //                   >
+    //                     <MdLogin className="w-5 h-5 text-emerald-600" />
+    //                     <span>Login</span>
+    //                   </Link>
+    //                   <Link
+    //                     to="/register"
+    //                     className="flex items-center space-x-2 px-4 py-3 hover:bg-emerald-50 transition-colors"
+    //                   >
+    //                     <MdPersonAdd className="w-5 h-5 text-emerald-600" />
+    //                     <span>Sign Up</span>
+    //                   </Link>
+    //                 </>
+    //               )}
+    //             </div>
+    //           )}
+    //         </div>
+    //       </div>
+
+    //       {/* Mobile Menu Button */}
+    //       <div className="lg:hidden">
+    //         <button
+    //           onClick={() => setIsOpen(!isOpen)}
+    //           className="p-2 hover:bg-emerald-100 rounded-lg transition-colors"
+    //         >
+    //           {isOpen ? (
+    //             <IoClose className="w-6 h-6 text-gray-700" />
+    //           ) : (
+    //             <RiMenu3Line className="w-6 h-6 text-gray-700" />
+    //           )}
+    //         </button>
+    //       </div>
+    //     </div>
+
+    //     {/* Mobile Menu */}
+    //     {isOpen && (
+    //       <div className="lg:hidden border-t border-gray-200">
+    //         <div className="px-2 pt-2 pb-3 space-y-1">
+    //           <NavLink
+    //             to="/"
+    //             className={({ isActive }) =>
+    //               `block px-3 py-2 rounded-lg ${
+    //                 isActive
+    //                   ? "bg-emerald-500 text-white"
+    //                   : "hover:bg-emerald-100 text-gray-700"
+    //               }`
+    //             }
+    //           >
+    //             Home
+    //           </NavLink>
+    //           <NavLink
+    //             to="/available-camps"
+    //             className={({ isActive }) =>
+    //               `block px-3 py-2 rounded-lg ${
+    //                 isActive
+    //                   ? "bg-emerald-500 text-white"
+    //                   : "hover:bg-emerald-100 text-gray-700"
+    //               }`
+    //             }
+    //           >
+    //             Available Camps
+    //           </NavLink>
+    //           {user ? (
+    //             <>
+    //               <Link
+    //                 to={`/dashboard/${organizer ? "admin" : "user"}-home`}
+    //                 className="block px-3 py-2 rounded-lg hover:bg-emerald-100 text-gray-700"
+    //               >
+    //                 Dashboard
+    //               </Link>
+    //               <button
+    //                 onClick={logOut}
+    //                 className="block w-full text-left px-3 py-2 rounded-lg hover:bg-rose-50 text-rose-600"
+    //               >
+    //                 Logout
+    //               </button>
+    //             </>
+    //           ) : (
+    //             <>
+    //               <Link
+    //                 to="/login"
+    //                 className="block px-3 py-2 rounded-lg hover:bg-emerald-100 text-gray-700"
+    //               >
+    //                 Login
+    //               </Link>
+    //               <Link
+    //                 to="/register"
+    //                 className="block px-3 py-2 rounded-lg hover:bg-emerald-100 text-gray-700"
+    //               >
+    //                 Sign Up
+    //               </Link>
+    //             </>
+    //           )}
+    //         </div>
+    //       </div>
+    //     )}
+    //   </div>
+    // </div>
     // <div className="fixed w-full bg-white z-10 shadow-sm px-4">
     //   <div className="py-4 border-b-[1px]">
     //     <div className="flex flex-row  items-center justify-between gap-3 md:gap-0">
