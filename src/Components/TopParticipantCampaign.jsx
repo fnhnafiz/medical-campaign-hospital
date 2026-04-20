@@ -18,7 +18,7 @@ const TopParticipantCampaign = () => {
   const sortedCampaigns = [...campaign].sort(
     (a, b) => b.participantCount - a.participantCount
   );
-  const topParticipantCampaigns = sortedCampaigns.slice(0, 6);
+  const topParticipantCampaigns = sortedCampaigns.slice(0, 8);
   if (isLoading) return <LoadingSpinner />;
   return (
     <div>

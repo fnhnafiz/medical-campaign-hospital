@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 import SupportOurMission from "../Components/SupportOurMission";
+import EmergencyHotline from "../Components/EmergencyHotline";
 
 const MainLayout = () => {
   return (
@@ -13,6 +14,7 @@ const MainLayout = () => {
         <Outlet></Outlet>
       </main>
       <section>
+        <EmergencyHotline />
         <SupportOurMission></SupportOurMission>
       </section>
       <footer>

@@ -190,7 +190,7 @@ const SupportOurMission = () => {
   ];
 
   return (
-    <section className="relative bg-white py-16 px-6 overflow-hidden">
+    <section className="relative  py-16 px-6 overflow-hidden">
       <div className="absolute -top-20 -left-20 w-72 h-72 rounded-full bg-emerald-50 pointer-events-none" />
       <div className="absolute -bottom-16 -right-16 w-60 h-60 rounded-full bg-emerald-50 pointer-events-none" />
 
